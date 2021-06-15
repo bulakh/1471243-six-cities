@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import PlaceCard from '../place-card/place-card.jsx';
 
 function MainScreen(props) {
-  const {ordersCount} = props;
-  let KEY_COUNT = 1;
-
-  const cards = new Array(ordersCount).fill().map((elem) => elem = <PlaceCard key={KEY_COUNT++}/>);
+  const {cards} = props;
 
   return (
     <div className="page page--gray page--main">
@@ -80,7 +77,7 @@ function MainScreen(props) {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{ordersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{cards.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex="0">
@@ -97,7 +94,7 @@ function MainScreen(props) {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {cards}
+                {cards.map((card) => <PlaceCard key={card.title+card.id}/>)}
               </div>
             </section>
             <div className="cities__right-section">
@@ -111,7 +108,12 @@ function MainScreen(props) {
 }
 
 MainScreen.propTypes = {
-  ordersCount: PropTypes.number.isRequired,
+  cards: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+    }),
+  ),
 };
 
 export default MainScreen;

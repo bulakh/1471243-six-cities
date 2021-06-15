@@ -3,15 +3,20 @@ import PropTypes from 'prop-types';
 import MainScreen from '../main-screen/main-screen.jsx';
 
 function App(props) {
-  const {ordersCount} = props;
+  const {cards} = props;
 
   return (
-    <MainScreen ordersCount={ordersCount} />
+    <MainScreen cards={cards} />
   );
 }
 
 App.propTypes = {
-  ordersCount: PropTypes.number.isRequired,
+  cards: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+    }),
+  ),
 };
 
 export default App;

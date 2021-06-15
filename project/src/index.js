@@ -2,14 +2,33 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app.jsx';
 
-const Setting = {
-  ORDERS_COUNT: 6,
-};
+const cards = [
+  {
+    title: 'firstCard',
+    id: 1,
+  },
+  {
+    title: 'secondCard',
+    id: 2,
+  },
+  {
+    title: 'thirdCard',
+    id: 3,
+  },
+  {
+    title: 'fourthCard',
+    id: 4,
+  },
+  {
+    title: 'fifthCard',
+    id: 5,
+  },
+];
 
 ReactDOM.render(
   <React.StrictMode>
     <App
-      ordersCount={Setting.ORDERS_COUNT}
+      cards={cards}
     />
   </React.StrictMode>,
   document.getElementById('root'),
