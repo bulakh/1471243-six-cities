@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PlaceCard from '../place-card/place-card.jsx';
+import PlaceCard from '../card/card.jsx';
+import Logo from '../logo/logo.jsx';
+import AccountLogged from '../account/account-logged.jsx';
 
-function MainScreen(props) {
+function Main(props) {
   const {cards} = props;
 
   return (
@@ -10,27 +12,8 @@ function MainScreen(props) {
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
-            <div className="header__left">
-              <a className="header__logo-link header__logo-link--active" href="http://localhost">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="http://localhost">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="http://localhost">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <Logo/>
+            <AccountLogged/>
           </div>
         </div>
       </header>
@@ -41,32 +24,32 @@ function MainScreen(props) {
           <section className="locations container">
             <ul className="locations__list tabs__list">
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost">
+                <a className="locations__item-link tabs__item" href="http://localhost:3000">
                   <span>Paris</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost">
+                <a className="locations__item-link tabs__item" href="http://localhost:3000">
                   <span>Cologne</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost">
+                <a className="locations__item-link tabs__item" href="http://localhost:3000">
                   <span>Brussels</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="http://localhost">
+                <a className="locations__item-link tabs__item tabs__item--active" href="http://localhost:3000">
                   <span>Amsterdam</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost">
+                <a className="locations__item-link tabs__item" href="http://localhost:3000">
                   <span>Hamburg</span>
                 </a>
               </li>
               <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost">
+                <a className="locations__item-link tabs__item" href="http://localhost:3000">
                   <span>Dusseldorf</span>
                 </a>
               </li>
@@ -94,7 +77,7 @@ function MainScreen(props) {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {cards.map((card) => <PlaceCard key={card.title+card.id}/>)}
+                {cards.map((card) => <PlaceCard key={card.id}/>)}
               </div>
             </section>
             <div className="cities__right-section">
@@ -107,7 +90,7 @@ function MainScreen(props) {
   );
 }
 
-MainScreen.propTypes = {
+Main.propTypes = {
   cards: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -116,4 +99,4 @@ MainScreen.propTypes = {
   ),
 };
 
-export default MainScreen;
+export default Main;
