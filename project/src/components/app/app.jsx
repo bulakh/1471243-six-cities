@@ -10,24 +10,34 @@ import Favorites from '../favorites/favorites.jsx';
 import Property from '../property/property.jsx';
 // import PropertyNotLogged from '../property/property-not-logged.jsx';
 import NotFoundPage from '../not-found-page/not-found-page.jsx';
+import OffersProp from '../property/offers.prop.js';
+import ReviewsProp from '../property/reviews.prop.js';
 
 function App(props) {
-  const {cards} = props;
+  const {offers, reviews, cities} = props;
 
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.MAIN}>
-          <Main cards={cards} />
+          <Main
+            offers={offers}
+            cities={cities}
+          />
         </Route>
         <Route exact path={AppRoute.SIGN_IN}>
           <Login/>
         </Route>
         <Route exact path={AppRoute.FAVORITES}>
-          <Favorites/>
+          <Favorites
+            offers={offers}
+          />
         </Route>
         <Route exact path={AppRoute.ROOM}>
-          <Property/>
+          <Property
+            offers={offers}
+            reviews={reviews}
+          />
         </Route>
         <Route>
           <NotFoundPage/>
@@ -38,12 +48,9 @@ function App(props) {
 }
 
 App.propTypes = {
-  cards: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-    }),
-  ),
+  offers: PropTypes.arrayOf(OffersProp),
+  reviews: PropTypes.arrayOf(ReviewsProp),
+  cities: PropTypes.arrayOf(PropTypes.string.isRequired),
 };
 
 export default App;
