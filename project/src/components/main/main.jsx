@@ -1,11 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import PlaceCard from '../card/card.jsx';
 import Logo from '../logo/logo.jsx';
+import Location from '../location/location.jsx';
 import AccountLogged from '../account/account-logged.jsx';
+import OffersProp from '../property/offers.prop.js';
 
 function Main(props) {
-  const {cards} = props;
+  const {offers, cities} = props;
+  const [showedSort, setShowedSort] = useState(false);
+
+  const toggleSort = () => {
+    setShowedSort(!showedSort);
+  };
 
   return (
     <div className="page page--gray page--main">
@@ -23,36 +30,7 @@ function Main(props) {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="http://localhost:3000">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {cities.map((name) => <Location name={name} key={name}/>)}
             </ul>
           </section>
         </div>
@@ -60,8 +38,10 @@ function Main(props) {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{cards.length} places to stay in Amsterdam</b>
-              <form className="places__sorting" action="#" method="get">
+              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
+              <form className="places__sorting" action="#" method="get"
+                onClick = {toggleSort}
+              >
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex="0">
                   Popular
@@ -69,15 +49,16 @@ function Main(props) {
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
+                {showedSort &&
                 <ul className="places__options places__options--custom places__options--opened">
                   <li className="places__option places__option--active" tabIndex="0">Popular</li>
                   <li className="places__option" tabIndex="0">Price: low to high</li>
                   <li className="places__option" tabIndex="0">Price: high to low</li>
                   <li className="places__option" tabIndex="0">Top rated first</li>
-                </ul>
+                </ul>}
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {cards.map((card) => <PlaceCard key={card.id}/>)}
+                {offers.map((offer) => <PlaceCard key={offer.id} offer={offer}/>)}
               </div>
             </section>
             <div className="cities__right-section">
@@ -91,12 +72,8 @@ function Main(props) {
 }
 
 Main.propTypes = {
-  cards: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-    }),
-  ),
+  offers: PropTypes.arrayOf(OffersProp),
+  cities: PropTypes.arrayOf(PropTypes.string.isRequired),
 };
 
 export default Main;

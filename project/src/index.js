@@ -1,34 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app.jsx';
-
-const cards = [
-  {
-    title: 'firstCard',
-    id: 1,
-  },
-  {
-    title: 'secondCard',
-    id: 2,
-  },
-  {
-    title: 'thirdCard',
-    id: 3,
-  },
-  {
-    title: 'fourthCard',
-    id: 4,
-  },
-  {
-    title: 'fifthCard',
-    id: 5,
-  },
-];
+import offers from './mocks/offers.js';
+import reviews from './mocks/reviews.js';
+import {cities} from './const.js';
 
 ReactDOM.render(
   <React.StrictMode>
     <App
-      cards={cards}
+      offers={offers}
+      reviews={reviews}
+      cities={cities}
     />
   </React.StrictMode>,
   document.getElementById('root'),

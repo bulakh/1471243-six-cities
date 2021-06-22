@@ -1,10 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 // import {Link} from 'react-router-dom';
 // import {AppRoute} from '../../const.js';
 import Logo from '../logo/logo.jsx';
+import Location from '../location/location.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 
-function MainEmpty() {
+function MainEmpty(props) {
+  const {cities} = props;
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -21,36 +25,7 @@ function MainEmpty() {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="http://localhost:3000">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="http://localhost:3000">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {cities.map((name) => <Location name={name} key={name}/>)}
             </ul>
           </section>
         </div>
@@ -69,5 +44,9 @@ function MainEmpty() {
     </div>
   );
 }
+
+MainEmpty.propTypes = {
+  cities: PropTypes.arrayOf(PropTypes.string.isRequired),
+};
 
 export default MainEmpty;
