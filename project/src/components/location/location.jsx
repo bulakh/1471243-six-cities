@@ -6,8 +6,6 @@ import {AppRoute} from '../../const.js';
 function Location(props) {
   const {name} = props;
   const [locationLink, setLocationLink] = useState('locations__item-link tabs__item');
-  // const active = 'tabs__item--active';
-
 
   return (
     <li className="locations__item">
