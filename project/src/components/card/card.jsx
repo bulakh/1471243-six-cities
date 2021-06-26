@@ -1,21 +1,20 @@
-import React, {useState} from 'react';
-// import PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-// import {AppRoute} from '../../const.js';
 import OffersProp from '../property/offers.prop.js';
 
 function Card(props) {
-  const {offer} = props;
-  const [hoveredCard, setHoveredCard] = useState(false);
+  const {offer, onListCardHover} = props;
+
+  const listCardHoverHandler = (evt) => {
+    onListCardHover(evt.currentTarget.id);
+  };
 
   return (
     <article className="cities__place-card place-card"
-      onMouseEnter={() => setHoveredCard(true)}
-      onMouseLeave={() => setHoveredCard(false)}
+      onMouseEnter={listCardHoverHandler}
+      id={offer.id}
     >
-      {/* State for Hover */}
-      {hoveredCard &&
-        <div></div>}
       {offer.isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
@@ -58,6 +57,7 @@ function Card(props) {
 
 Card.propTypes = {
   offer: OffersProp,
+  onListCardHover: PropTypes.func.isRequired,
 };
 
 export default Card;

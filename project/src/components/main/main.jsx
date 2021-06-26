@@ -4,6 +4,7 @@ import PlaceCard from '../card/card.jsx';
 import Logo from '../logo/logo.jsx';
 import Location from '../location/location.jsx';
 import AccountLogged from '../account/account-logged.jsx';
+import Map from '../map/map.jsx';
 import OffersProp from '../property/offers.prop.js';
 
 function Main(props) {
@@ -12,6 +13,15 @@ function Main(props) {
 
   const toggleSort = () => {
     setShowedSort(!showedSort);
+  };
+
+  const [selectedPoint, setSelectedPoint] = useState({});
+
+  const onListCardHover = (cardID) => {
+    const currentPoint = offers.find((offer) =>
+      offer.id === cardID,
+    );
+    setSelectedPoint(currentPoint);
   };
 
   return (
@@ -58,11 +68,23 @@ function Main(props) {
                 </ul>}
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {offers.map((offer) => <PlaceCard key={offer.id} offer={offer}/>)}
+                {offers.map((offer) => (
+                  <PlaceCard
+                    key={offer.id}
+                    offer={offer}
+                    onListCardHover={onListCardHover}
+                  />),
+                )}
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map
+                  city={offers[0].city}
+                  points={offers}
+                  selectedPoint={selectedPoint}
+                />
+              </section>
             </div>
           </div>
         </div>
