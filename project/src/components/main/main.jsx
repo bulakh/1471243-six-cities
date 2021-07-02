@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import PlaceCard from '../card/card.jsx';
+import CardList from '../card/card-list.jsx';
 import Logo from '../logo/logo.jsx';
 import Location from '../location/location.jsx';
 import AccountLogged from '../account/account-logged.jsx';
@@ -23,6 +23,8 @@ function Main(props) {
     );
     setSelectedPoint(currentPoint);
   };
+
+  const changedPin = true;
 
   return (
     <div className="page page--gray page--main">
@@ -68,13 +70,10 @@ function Main(props) {
                 </ul>}
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {offers.map((offer) => (
-                  <PlaceCard
-                    key={offer.id}
-                    offer={offer}
-                    onListCardHover={onListCardHover}
-                  />),
-                )}
+                <CardList
+                  offers={offers}
+                  onListCardHover={onListCardHover}
+                />
               </div>
             </section>
             <div className="cities__right-section">
@@ -83,6 +82,7 @@ function Main(props) {
                   city={offers[0].city}
                   points={offers}
                   selectedPoint={selectedPoint}
+                  changedPin={changedPin}
                 />
               </section>
             </div>

@@ -18,7 +18,7 @@ const currentIcon = leaflet.icon({
 });
 
 function Map(props) {
-  const {city, points, selectedPoint} = props;
+  const {city, points, selectedPoint, changedPin} = props;
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -29,13 +29,13 @@ function Map(props) {
           lat: point.location.latitude,
           lng: point.location.longitude,
         }, {
-          icon: (point.id === selectedPoint.id)
+          icon: (point.id === selectedPoint.id && changedPin)
             ? currentIcon
             : defaultIcon,
         })
         .addTo(map),
     );
-  }, [map, points, selectedPoint]);
+  }, [map, points, selectedPoint, changedPin]);
 
   return (
     <div
@@ -58,6 +58,7 @@ Map.propTypes = {
   }).isRequired,
   points: PropTypes.arrayOf(OffersProp),
   selectedPoint: PropTypes.object.isRequired,
+  changedPin: PropTypes.bool.isRequired,
 };
 
 export default Map;

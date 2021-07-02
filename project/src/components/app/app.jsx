@@ -11,7 +11,7 @@ import Property from '../property/property.jsx';
 // import PropertyNotLogged from '../property/property-not-logged.jsx';
 import NotFoundPage from '../not-found-page/not-found-page.jsx';
 import OffersProp from '../property/offers.prop.js';
-import ReviewsProp from '../property/reviews.prop.js';
+import ReviewsProp from '../reviews/reviews.prop.js';
 
 function App(props) {
   const {offers, reviews, cities} = props;
