@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {useParams} from 'react-router-dom';
 import {getMatchOffer} from '../../utils.js';
 import Logo from '../logo/logo.jsx';
 import AccountLogged from '../account/account-logged.jsx';
-import PlaceCard from '../card/card.jsx';
-import ReviewForm from '../review-form/review-form.jsx';
+import CardList from '../card/card-list.jsx';
+import ReviewForm from '../reviews/review-form.jsx';
+import ReviewList from '../reviews/reviews-list.jsx';
+import Map from '../map/map.jsx';
 import OffersProp from './offers.prop.js';
-import ReviewsProp from './reviews.prop.js';
+import ReviewsProp from '../reviews/reviews.prop.js';
 
 function Property(props) {
   const {offers, reviews} = props;
@@ -16,6 +18,19 @@ function Property(props) {
 
   const id = params.id;
   const offerMatched = getMatchOffer(offers, id);
+
+  const [selectedPoint, setSelectedPoint] = useState({});
+
+  const nearOffers = offers.slice(0, 3);
+
+  const onListCardHover = (cardID) => {
+    const currentPoint = offers.find((offer) =>
+      offer.id === cardID,
+    );
+    setSelectedPoint(currentPoint);
+  };
+
+  const changedPin = false;
 
   return (
     <div className="page">
@@ -112,43 +127,28 @@ function Property(props) {
               </div>
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ul className="reviews__list">
-                  {reviews.map((review) => (
-                    <li className="reviews__item" key={review.id}>
-                      <div className="reviews__user user">
-                        <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                          <img className="reviews__avatar user__avatar" src={review.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
-                        </div>
-                        <span className="reviews__user-name">
-                          {review.user.name}
-                        </span>
-                      </div>
-                      <div className="reviews__info">
-                        <div className="reviews__rating rating">
-                          <div className="reviews__stars rating__stars">
-                            <span style={{width: `${Math.round(review.rating) * 20}%`}}></span>
-                            <span className="visually-hidden">Rating</span>
-                          </div>
-                        </div>
-                        <p className="reviews__text">
-                          {review.comment}
-                        </p>
-                        <time className="reviews__time" dateTime={review.date}>{`${new Date(review.date).toLocaleString('en-US', { month: 'long' })} ${new Date(review.date).getFullYear()}`}</time>
-                      </div>
-                    </li>))}
-                </ul>
+                <ReviewList reviews={reviews}/>
                 <ReviewForm/>
               </section>
             </div>
           </div>
-          <section className="property__map map"></section>
+          <section className="property__map map">
+            <Map
+              city={offerMatched.city}
+              points={nearOffers}
+              selectedPoint={selectedPoint}
+              changedPin={changedPin}
+            />
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {offers.map((offer) => (offerMatched.city.name === offer.city.name && <PlaceCard key={offer.id} offer={offer}/>
-              ))}
+              <CardList
+                offers={nearOffers}
+                onListCardHover={onListCardHover}
+              />
             </div>
           </section>
         </div>

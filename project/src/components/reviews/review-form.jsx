@@ -1,11 +1,6 @@
 import React, {useState} from 'react';
-// import PropTypes from 'prop-types';
-// import {Link} from 'react-router-dom';
-// import {AppRoute} from '../../const.js';
-// import OffersProp from '../property/offers.prop.js';
 
 function ReviewForm(props) {
-  // const {offer} = props;
 
   const [comment, setComment] = useState('');
 
