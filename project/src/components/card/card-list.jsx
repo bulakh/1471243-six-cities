@@ -4,7 +4,7 @@ import Card from './card.jsx';
 import OffersProp from '../property/offers.prop.js';
 
 function CardList(props) {
-  const {offers, onListCardHover} = props;
+  const {offers, onCardListHover} = props;
 
   return (
     <>
@@ -12,7 +12,7 @@ function CardList(props) {
         <Card
           key={offer.id}
           offer={offer}
-          onListCardHover={onListCardHover}
+          onCardListHover={onCardListHover}
         />),
       )}
     </>
@@ -21,7 +21,7 @@ function CardList(props) {
 
 CardList.propTypes = {
   offers: PropTypes.arrayOf(OffersProp),
-  onListCardHover: PropTypes.func.isRequired,
+  onCardListHover: PropTypes.func.isRequired,
 };
 
 export default CardList;

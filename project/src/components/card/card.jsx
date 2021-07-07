@@ -4,10 +4,10 @@ import {Link} from 'react-router-dom';
 import OffersProp from '../property/offers.prop.js';
 
 function Card(props) {
-  const {offer, onListCardHover} = props;
+  const {offer, onCardListHover} = props;
 
   const listCardHoverHandler = (evt) => {
-    onListCardHover(evt.currentTarget.id);
+    onCardListHover(evt.currentTarget.id);
   };
 
   return (
@@ -57,7 +57,7 @@ function Card(props) {
 
 Card.propTypes = {
   offer: OffersProp,
-  onListCardHover: PropTypes.func.isRequired,
+  onCardListHover: PropTypes.func.isRequired,
 };
 
 export default Card;

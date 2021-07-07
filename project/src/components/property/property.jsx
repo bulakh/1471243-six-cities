@@ -23,7 +23,7 @@ function Property(props) {
 
   const nearOffers = offers.slice(0, 3);
 
-  const onListCardHover = (cardID) => {
+  const onCardListHover = (cardID) => {
     const currentPoint = offers.find((offer) =>
       offer.id === cardID,
     );
@@ -147,7 +147,7 @@ function Property(props) {
             <div className="near-places__list places__list">
               <CardList
                 offers={nearOffers}
-                onListCardHover={onListCardHover}
+                onCardListHover={onCardListHover}
               />
             </div>
           </section>
