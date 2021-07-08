@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import {AppRoute} from '../../const.js';
 import Main from '../main/main.jsx';
-// import MainEmpty from '../main/main-empty.jsx';
 import Login from '../login/login.jsx';
 import Favorites from '../favorites/favorites.jsx';
 // import FavoritesEmpty from '../favorites/favorites-empty.jsx';

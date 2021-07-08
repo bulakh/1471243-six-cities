@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import {Link} from 'react-router-dom';
-// import {AppRoute} from '../../const.js';
 import Logo from '../logo/logo.jsx';
 import Location from '../location/location.jsx';
 import AccountLogged from '../account/account-logged.jsx';

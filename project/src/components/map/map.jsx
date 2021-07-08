@@ -1,17 +1,17 @@
 import React, {useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import leaflet from 'leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import useMap from './useMap.jsx';
+import useMap from '../../hooks/useMap.jsx';
 import OffersProp from '../property/offers.prop.js';
 
-const defaultIcon = leaflet.icon({
+const defaultIcon = L.icon({
   iconUrl: 'img/pin.svg',
   iconSize: [30, 30],
   iconAnchor: [15, 30],
 });
 
-const currentIcon = leaflet.icon({
+const currentIcon = L.icon({
   iconUrl: 'img/pin-active.svg',
   iconSize: [30, 30],
   iconAnchor: [15, 30],
@@ -23,18 +23,35 @@ function Map(props) {
   const map = useMap(mapRef, city);
 
   useEffect(() => {
-    map && points.map((point) =>
-      leaflet
-        .marker({
+    const layerGroup = L.layerGroup();
+
+    if (map) {
+      points.forEach((point) => {
+        const marker = L.marker({
           lat: point.location.latitude,
           lng: point.location.longitude,
         }, {
           icon: (point.id === selectedPoint.id && changedPin)
             ? currentIcon
             : defaultIcon,
-        })
-        .addTo(map),
-    );
+        });
+        layerGroup.addLayer(marker);
+      });
+
+      layerGroup.addTo(map);
+
+      map.flyTo(
+        [points[0].city.location.latitude, points[0].city.location.longitude],
+        points[0].city.location.zoom,
+      );
+    }
+
+    return () => {
+      if (map) {
+        layerGroup.remove();
+      }
+    };
+
   }, [map, points, selectedPoint, changedPin]);
 
   return (

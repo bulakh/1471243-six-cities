@@ -138,6 +138,40 @@ const offers = [
     title: 'Big best room in centre',
     type: 'room',
   },
+  {
+    bedrooms: 3,
+    city: {
+      location: {
+        latitude: 48.8534100,
+        longitude: 2.3488000,
+        zoom: 10,
+      },
+      name: 'Paris',
+    },
+    description: 'Paris this is my city',
+    goods: ['Eiffel Tower', 'Croissants', 'Other stereotypes'],
+    host: {
+      avatarUrl: `${AVATAR_URL}?rnd=${Math.random()}`,
+      id: nanoid(),
+      isPro: false,
+      name: 'Jan Jac',
+    },
+    id: nanoid(),
+    images: ['img/apartment-01.jpg', 'img/apartment-02.jpg', 'img/apartment-03.jpg', 'img/studio-01.jpg', 'img/room.jpg'],
+    isFavorite: false,
+    isPremium: true,
+    location: {
+      latitude: 48.853451561,
+      longitude: 2.3488061231,
+      zoom: 8,
+    },
+    maxAdults: 4,
+    previewImage: 'img/apartment-01.jpg',
+    price: 120,
+    rating: 4.6,
+    title: 'Our French place',
+    type: 'hotel',
+  },
 ];
 
 export default offers;

@@ -10,3 +10,7 @@ export const getMatchOffer = (offers, id) => {
   offers.map((offer) => offer.id === id ? matchedOffer = offer : '');
   return matchedOffer;
 };
+
+export const getFilteredOffers = (offers, city) =>
+  offers.filter((offer) => offer.city.name === city);
+
