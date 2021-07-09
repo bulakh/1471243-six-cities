@@ -1,14 +1,41 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import {ActionCreator} from '../../store/action';
+import {connect} from 'react-redux';
+import {sortVariants} from '../../const.js';
 
-function SortList() {
+function SortList(props) {
+  const {active, sortOffersList, sort} = props;
+
   return (
-    <ul className="places__options places__options--custom places__options--opened">
-      <li className="places__option places__option--active" tabIndex="0">Popular</li>
-      <li className="places__option" tabIndex="0">Price: low to high</li>
-      <li className="places__option" tabIndex="0">Price: high to low</li>
-      <li className="places__option" tabIndex="0">Top rated first</li>
+    <ul className={`places__options places__options--custom ${active && 'places__options--opened'}`}
+      onClick={(evt) => {
+        sortOffersList(evt.target.textContent);
+      }}
+    >
+      {sortVariants.map((variant) => (
+        <li className={`places__option ${sort === variant ? 'places__option--active' : ''}`} tabIndex="0" key={variant}>{variant}
+        </li>
+      ))}
     </ul>
   );
 }
 
-export default SortList;
+SortList.propTypes = {
+  active: PropTypes.bool.isRequired,
+  sortOffersList: PropTypes.func.isRequired,
+  sort: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  sort: state.sort,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  sortOffersList(variant) {
+    dispatch(ActionCreator.sortOffersList(variant));
+  },
+});
+
+export {SortList};
+export default connect(mapStateToProps, mapDispatchToProps)(SortList);
