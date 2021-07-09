@@ -71,7 +71,7 @@ const offers = [
     type: 'hotel',
   },
   {
-    bedrooms: 2,
+    bedrooms: 3,
     city: {
       location: {
         latitude: 52.370216,
@@ -133,7 +133,7 @@ const offers = [
     },
     maxAdults: 1,
     previewImage: 'img/apartment-03.jpg',
-    price: 120,
+    price: 140,
     rating: 2.4,
     title: 'Big best room in centre',
     type: 'room',

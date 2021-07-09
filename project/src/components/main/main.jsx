@@ -11,13 +11,15 @@ import LocationList from '../location/location-list.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 import Map from '../map/map.jsx';
 import OffersProp from '../property/offers.prop.js';
+import {sorting} from '../sort/sort.js';
 
 function Main(props) {
-  const {offers, cities, city, fillOffersList} = props;
+  const {offers, cities, city, sort, fillOffersList} = props;
 
   const offersOfOneCity = getFilteredOffers(offers, city);
 
   fillOffersList(offersOfOneCity);
+  fillOffersList(sorting(offersOfOneCity, sort));
 
   const [showedSort, setShowedSort] = useState(false);
 
@@ -70,12 +72,12 @@ function Main(props) {
               >
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex="0">
-                  Popular
+                  {sort}
                   <svg className="places__sorting-arrow" width="7" height="4">
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
-                {showedSort && <SortList/>}
+                <SortList offers={offersOfOneCity} active={showedSort}/>
               </form>
               <div className="cities__places-list places__list tabs__content">
                 <CardList
@@ -106,10 +108,12 @@ Main.propTypes = {
   fillOffersList: PropTypes.func.isRequired,
   cities: PropTypes.arrayOf(PropTypes.string.isRequired),
   city: PropTypes.string.isRequired,
+  sort: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   city: state.city,
+  sort: state.sort,
 });
 
 const mapDispatchToProps = (dispatch) => ({
