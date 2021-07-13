@@ -10,11 +10,11 @@ function SortList(props) {
   return (
     <ul className={`places__options places__options--custom ${active && 'places__options--opened'}`}
       onClick={(evt) => {
-        sortOffersList(evt.target.textContent);
+        sortOffersList(evt.target.dataset.name);
       }}
     >
       {sortVariants.map((variant) => (
-        <li className={`places__option ${sort === variant ? 'places__option--active' : ''}`} tabIndex="0" key={variant}>{variant}
+        <li className={`places__option ${sort === variant ? 'places__option--active' : ''}`} tabIndex="0" data-name={variant} key={variant}>{variant}
         </li>
       ))}
     </ul>

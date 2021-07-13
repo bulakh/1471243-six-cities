@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {ActionCreator} from '../../store/action.js';
 import {Link} from 'react-router-dom';
 import OffersProp from '../property/offers.prop.js';
 
 function Card(props) {
-  const {offer, onCardListHover} = props;
+  const {offer, selectPointId} = props;
 
   const listCardHoverHandler = (evt) => {
-    onCardListHover(evt.currentTarget.id);
+    selectPointId(evt.currentTarget.id);
   };
 
   return (
@@ -57,7 +59,14 @@ function Card(props) {
 
 Card.propTypes = {
   offer: OffersProp,
-  onCardListHover: PropTypes.func.isRequired,
+  selectPointId: PropTypes.func.isRequired,
 };
 
-export default Card;
+const mapDispatchToProps = (dispatch) => ({
+  selectPointId(id) {
+    dispatch(ActionCreator.selectPointId(id));
+  },
+});
+
+export {Card};
+export default connect(null, mapDispatchToProps)(Card);

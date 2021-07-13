@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {getUniqCities} from '../../utils.js';
 import Logo from '../logo/logo.jsx';
@@ -9,9 +10,9 @@ import AccountLogged from '../account/account-logged.jsx';
 import OffersProp from '../property/offers.prop.js';
 
 function Favorites(props) {
-  const {offers} = props;
+  const {allOffers} = props;
 
-  const uniqCities = getUniqCities(offers);
+  const uniqCities = getUniqCities(allOffers);
 
   return (
     <div className="page">
@@ -39,7 +40,7 @@ function Favorites(props) {
                     </div>
                   </div>
                   <div className="favorites__places">
-                    {offers.map((offer) => offer.isFavorite && offer.city.name === city && <FavoritesCard offer={offer} key={offer.id}/>)}
+                    {allOffers.map((offer) => offer.isFavorite && offer.city.name === city && <FavoritesCard offer={offer} key={offer.id}/>)}
                   </div>
                 </li>))}
             </ul>
@@ -54,7 +55,12 @@ function Favorites(props) {
 }
 
 Favorites.propTypes = {
-  offers: PropTypes.arrayOf(OffersProp),
+  allOffers: PropTypes.arrayOf(OffersProp),
 };
 
-export default Favorites;
+const mapStateToProps = (state) => ({
+  allOffers: state.allOffers,
+});
+
+export {Favorites};
+export default connect(mapStateToProps, null)(Favorites);
