@@ -1,3 +1,5 @@
+import {AuthorizationStatus} from './const';
+
 export const getUniqCities = (offers) => {
   const cities = new Set();
   offers.map((offer) => (offer.isFavorite && cities.add(offer.city.name)));
@@ -7,10 +9,12 @@ export const getUniqCities = (offers) => {
 
 export const getMatchOffer = (offers, id) => {
   let matchedOffer;
-  offers.map((offer) => offer.id === id ? matchedOffer = offer : '');
+  offers.map((offer) => offer.id === parseInt(id, 10) ? matchedOffer = offer : '');
   return matchedOffer;
 };
 
 export const getFilteredOffers = (offers, city) =>
   offers.filter((offer) => offer.city.name === city);
 
+export const isCheckedAuth = (authorizationStatus) =>
+  authorizationStatus === AuthorizationStatus.UNKNOWN;

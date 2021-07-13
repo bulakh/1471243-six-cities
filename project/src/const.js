@@ -17,3 +17,17 @@ export const houseTypes = ['hotel', 'house', 'apartment', 'room'];
 export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 export const sortVariants = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
+
+export const AuthorizationStatus = {
+  AUTH: 'AUTH',
+  NO_AUTH: 'NO_AUTH',
+  UNKNOWN: 'UNKNOWN',
+};
+
+export const APIRoute = {
+  HOTELS: '/hotels',
+  FAVORITE: '/favorite',
+  COMMENT: '/comments',
+  LOGIN: '/login',
+  LOGOUT: '/logout',
+};

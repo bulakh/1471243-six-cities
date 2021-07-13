@@ -1,5 +1,6 @@
 import React, {useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap.jsx';
@@ -18,7 +19,7 @@ const currentIcon = L.icon({
 });
 
 function Map(props) {
-  const {city, points, selectedPoint, changedPin} = props;
+  const {city, points, changedPin, selectedPointId} = props;
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -31,7 +32,7 @@ function Map(props) {
           lat: point.location.latitude,
           lng: point.location.longitude,
         }, {
-          icon: (point.id === selectedPoint.id && changedPin)
+          icon: (point.id === parseInt(selectedPointId, 10) && changedPin)
             ? currentIcon
             : defaultIcon,
         });
@@ -52,7 +53,7 @@ function Map(props) {
       }
     };
 
-  }, [map, points, selectedPoint, changedPin]);
+  }, [map, points, selectedPointId, changedPin]);
 
   return (
     <div
@@ -74,8 +75,13 @@ Map.propTypes = {
     name: PropTypes.string.isRequired,
   }).isRequired,
   points: PropTypes.arrayOf(OffersProp),
-  selectedPoint: PropTypes.object.isRequired,
   changedPin: PropTypes.bool.isRequired,
+  selectedPointId: PropTypes.string.isRequired,
 };
 
-export default Map;
+const mapStateToProps = (state) => ({
+  selectedPointId: state.selectedPointId,
+});
+
+export {Map};
+export default connect(mapStateToProps, null)(Map);

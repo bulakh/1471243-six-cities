@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {useParams} from 'react-router-dom';
+import {connect} from 'react-redux';
 import {getMatchOffer} from '../../utils.js';
 import Logo from '../logo/logo.jsx';
 import AccountLogged from '../account/account-logged.jsx';
@@ -12,23 +12,11 @@ import OffersProp from './offers.prop.js';
 import ReviewsProp from '../reviews/reviews.prop.js';
 
 function Property(props) {
-  const {offers, reviews} = props;
+  const {allOffers,  reviews, selectedPointId} = props;
 
-  const params = useParams();
+  const offerMatched = getMatchOffer(allOffers, selectedPointId);
 
-  const id = params.id;
-  const offerMatched = getMatchOffer(offers, id);
-
-  const [selectedPoint, setSelectedPoint] = useState({});
-
-  const nearOffers = offers.slice(0, 3);
-
-  const onCardListHover = (cardID) => {
-    const currentPoint = offers.find((offer) =>
-      offer.id === cardID,
-    );
-    setSelectedPoint(currentPoint);
-  };
+  const nearOffers = allOffers.slice(0, 3);
 
   const changedPin = false;
 
@@ -136,7 +124,6 @@ function Property(props) {
             <Map
               city={offerMatched.city}
               points={nearOffers}
-              selectedPoint={selectedPoint}
               changedPin={changedPin}
             />
           </section>
@@ -147,7 +134,6 @@ function Property(props) {
             <div className="near-places__list places__list">
               <CardList
                 offers={nearOffers}
-                onCardListHover={onCardListHover}
               />
             </div>
           </section>
@@ -158,8 +144,15 @@ function Property(props) {
 }
 
 Property.propTypes = {
-  offers: PropTypes.arrayOf(OffersProp),
+  allOffers: PropTypes.arrayOf(OffersProp),
   reviews: PropTypes.arrayOf(ReviewsProp),
+  selectedPointId: PropTypes.string.isRequired,
 };
 
-export default Property;
+const mapStateToProps = (state) => ({
+  allOffers: state.allOffers,
+  selectedPointId: state.selectedPointId,
+});
+
+export {Property};
+export default connect(mapStateToProps, null)(Property);

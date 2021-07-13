@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getFilteredOffers} from '../../utils.js';
-import {ActionCreator} from '../../store/action';
+import {ActionCreator} from '../../store/action.js';
 import MainEmpty from './main-empty.jsx';
 import CardList from '../card/card-list.jsx';
 import SortList from '../sort/sort-list.jsx';
@@ -12,11 +12,12 @@ import AccountLogged from '../account/account-logged.jsx';
 import Map from '../map/map.jsx';
 import OffersProp from '../property/offers.prop.js';
 import {sorting} from '../sort/sort.js';
+import {cities} from '../../const.js';
 
 function Main(props) {
-  const {offers, cities, city, sort, fillOffersList} = props;
+  const {allOffers, city, sort, fillOffersList} = props;
 
-  const offersOfOneCity = getFilteredOffers(offers, city);
+  const offersOfOneCity = getFilteredOffers(allOffers, city);
 
   fillOffersList(offersOfOneCity);
   fillOffersList(sorting(offersOfOneCity, sort));
@@ -25,15 +26,6 @@ function Main(props) {
 
   const toggleSort = () => {
     setShowedSort(!showedSort);
-  };
-
-  const [selectedPoint, setSelectedPoint] = useState({});
-
-  const onCardListHover = (cardID) => {
-    const currentPoint = offers.find((offer) =>
-      offer.id === cardID,
-    );
-    setSelectedPoint(currentPoint);
   };
 
   const changedPin = true;
@@ -82,7 +74,6 @@ function Main(props) {
               <div className="cities__places-list places__list tabs__content">
                 <CardList
                   offers={offersOfOneCity}
-                  onCardListHover={onCardListHover}
                 />
               </div>
             </section>
@@ -91,7 +82,6 @@ function Main(props) {
                 <Map
                   city={offersOfOneCity[0].city}
                   points={offersOfOneCity}
-                  selectedPoint={selectedPoint}
                   changedPin={changedPin}
                 />
               </section>
@@ -104,9 +94,8 @@ function Main(props) {
 }
 
 Main.propTypes = {
-  offers: PropTypes.arrayOf(OffersProp),
+  allOffers: PropTypes.arrayOf(OffersProp),
   fillOffersList: PropTypes.func.isRequired,
-  cities: PropTypes.arrayOf(PropTypes.string.isRequired),
   city: PropTypes.string.isRequired,
   sort: PropTypes.string.isRequired,
 };
@@ -114,6 +103,7 @@ Main.propTypes = {
 const mapStateToProps = (state) => ({
   city: state.city,
   sort: state.sort,
+  allOffers: state.allOffers,
 });
 
 const mapDispatchToProps = (dispatch) => ({
