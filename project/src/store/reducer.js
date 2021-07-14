@@ -9,6 +9,7 @@ const initialState = {
   authorizationStatus: AuthorizationStatus.UNKNOWN,
   isDataLoaded: false,
   selectedPointId: '',
+  email: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -49,6 +50,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedPointId: action.payload,
+      };
+    case ActionType.TAKE_EMAIL:
+      return {
+        ...state,
+        email: action.payload,
       };
     default:
       return state;

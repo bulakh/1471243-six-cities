@@ -9,13 +9,14 @@ import SortList from '../sort/sort-list.jsx';
 import Logo from '../logo/logo.jsx';
 import LocationList from '../location/location-list.jsx';
 import AccountLogged from '../account/account-logged.jsx';
+import AccountNotLogged from '../account/account-not-logged.jsx';
 import Map from '../map/map.jsx';
 import OffersProp from '../property/offers.prop.js';
 import {sorting} from '../sort/sort.js';
-import {cities} from '../../const.js';
+import {AuthorizationStatus, cities} from '../../const.js';
 
 function Main(props) {
-  const {allOffers, city, sort, fillOffersList} = props;
+  const {allOffers, city, sort, fillOffersList, authorizationStatus} = props;
 
   const offersOfOneCity = getFilteredOffers(allOffers, city);
 
@@ -42,7 +43,9 @@ function Main(props) {
         <div className="container">
           <div className="header__wrapper">
             <Logo/>
-            <AccountLogged/>
+            {authorizationStatus === AuthorizationStatus.AUTH
+              ? <AccountLogged/>
+              : <AccountNotLogged/>}
           </div>
         </div>
       </header>
@@ -98,12 +101,14 @@ Main.propTypes = {
   fillOffersList: PropTypes.func.isRequired,
   city: PropTypes.string.isRequired,
   sort: PropTypes.string.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   city: state.city,
   sort: state.sort,
   allOffers: state.allOffers,
+  authorizationStatus: state.authorizationStatus,
 });
 
 const mapDispatchToProps = (dispatch) => ({

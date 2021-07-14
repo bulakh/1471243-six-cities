@@ -6,6 +6,8 @@ export const ActionType = {
   REQUIRED_AUTHORIZATION: 'REQUIRED_AUTHORIZATION',
   LOGOUT: 'LOGOUT',
   SELECT_POINT_ID: 'SELECT_POINT_ID',
+  TAKE_EMAIL: 'TAKE_EMAIL',
+  REDIRECT_TO_ROUTE: 'REDIRECT_TO_ROUTE',
 };
 
 export const ActionCreator = {
@@ -35,5 +37,13 @@ export const ActionCreator = {
   selectPointId: (id) => ({
     type: ActionType.SELECT_POINT_ID,
     payload: id,
+  }),
+  takeEmail: (email) => ({
+    type: ActionType.TAKE_EMAIL,
+    payload: email,
+  }),
+  redirectToRoute: (url) => ({
+    type: ActionType.REDIRECT_TO_ROUTE,
+    payload: url,
   }),
 };

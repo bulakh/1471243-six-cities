@@ -12,7 +12,7 @@ const loading = {
 
 function LoadingScreen() {
   return (
-    <div style={loading}>Loading&#8230;</div>
+    <div style={loading}>Loading...</div>
   );
 }
 
