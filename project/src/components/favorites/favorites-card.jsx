@@ -1,7 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-// import {AppRoute} from '../../const.js';
 import OffersProp from '../property/offers.prop.js';
 
 function FavoritesCard(props) {
