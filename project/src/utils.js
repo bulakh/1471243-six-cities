@@ -1,4 +1,5 @@
 import {AuthorizationStatus} from './const';
+import {offerAdaptToClient, commentAdaptToClient} from './store/adapter.js';
 
 export const getUniqCities = (offers) => {
   const cities = new Set();
@@ -7,14 +8,26 @@ export const getUniqCities = (offers) => {
   return uniqCities;
 };
 
-export const getMatchOffer = (offers, id) => {
-  let matchedOffer;
-  offers.map((offer) => offer.id === parseInt(id, 10) ? matchedOffer = offer : '');
-  return matchedOffer;
-};
-
 export const getFilteredOffers = (offers, city) =>
   offers.filter((offer) => offer.city.name === city);
 
 export const isCheckedAuth = (authorizationStatus) =>
   authorizationStatus === AuthorizationStatus.UNKNOWN;
+
+export const adaptedOffers = (offers) => {
+  const adaptOffers = [];
+
+  offers.forEach((offer) => {
+    adaptOffers.push(offerAdaptToClient(offer));
+  });
+  return adaptOffers;
+};
+
+export const adaptedComments = (comments) => {
+  const adaptComments = [];
+
+  comments.forEach((comment) => {
+    adaptComments.push(commentAdaptToClient(comment));
+  });
+  return adaptComments;
+};

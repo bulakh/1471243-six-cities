@@ -1,7 +1,7 @@
 import React from 'react';
 import ReviewsProp from './reviews.prop.js';
 
-function ReviewItem(props) {
+function ReviewsItem(props) {
   const {review} = props;
 
   return (
@@ -30,8 +30,8 @@ function ReviewItem(props) {
   );
 }
 
-ReviewItem.propTypes = {
+ReviewsItem.propTypes = {
   review: ReviewsProp,
 };
 
-export default ReviewItem;
+export default ReviewsItem;

@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {login} from '../../store/api-actions.js';
 import {Link} from 'react-router-dom';
-import {AppRoute} from '../../const.js';
+import {AppRoute, AuthorizationStatus} from '../../const.js';
 import {ActionCreator} from '../../store/action.js';
 import Logo from '../logo/logo.jsx';
 import AccountNotLogged from '../account/account-not-logged.jsx';
 
 function LoginScreen(props) {
-  const {onSubmit, takeEmail} = props;
+  const {onSubmit, takeEmail, authorizationStatus} = props;
   const loginRef = useRef();
   const passwordRef = useRef();
 
@@ -20,9 +20,11 @@ function LoginScreen(props) {
       login: loginRef.current.value,
       password: passwordRef.current.value,
     });
-
-    takeEmail(loginRef.current.value);
   };
+
+  if (authorizationStatus === AuthorizationStatus.AUTH) {
+    takeEmail(loginRef.current.value);
+  }
 
   return (
     <div className="page page--gray page--login">
@@ -90,8 +92,12 @@ function LoginScreen(props) {
 LoginScreen.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   takeEmail: PropTypes.func.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  authorizationStatus: state.authorizationStatus,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   onSubmit(authData) {
@@ -103,4 +109,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export {LoginScreen};
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
