@@ -1,24 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {getMatchOffer} from '../../utils.js';
 import Logo from '../logo/logo.jsx';
 import AccountLogged from '../account/account-logged.jsx';
+import AccountNotLogged from '../account/account-not-logged.jsx';
 import CardList from '../card/card-list.jsx';
 import ReviewForm from '../reviews/review-form.jsx';
-import ReviewList from '../reviews/reviews-list.jsx';
+import ReviewsList from '../reviews/reviews-list.jsx';
 import Map from '../map/map.jsx';
-import OffersProp from './offers.prop.js';
-import ReviewsProp from '../reviews/reviews.prop.js';
+import LoadingScreen from '../loading-screen/loading-screen.jsx';
+import {AuthorizationStatus, FetchingStatus} from '../../const.js';
 
 function Property(props) {
-  const {allOffers,  reviews, selectedPointId} = props;
-
-  const offerMatched = getMatchOffer(allOffers, selectedPointId);
-
-  const nearOffers = allOffers.slice(0, 3);
+  const {offer, authorizationStatus, fetchDataStatus} = props;
+  const currentOffer = offer.offer;
+  const comments = offer.comments;
+  const nearOffers = offer.nearby;
 
   const changedPin = false;
+
+
+  if (fetchDataStatus === FetchingStatus.FETCHING) {
+    return (
+      <LoadingScreen/>
+    );
+  }
 
   return (
     <div className="page">
@@ -26,7 +32,9 @@ function Property(props) {
         <div className="container">
           <div className="header__wrapper">
             <Logo/>
-            <AccountLogged/>
+            {authorizationStatus === AuthorizationStatus.AUTH
+              ? <AccountLogged/>
+              : <AccountNotLogged/>}
           </div>
         </div>
       </header>
@@ -35,58 +43,58 @@ function Property(props) {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {offerMatched.images.map((image) => (
+              {currentOffer.images.map((image) => (
                 <div className="property__image-wrapper" key={image}>
-                  <img className="property__image" src={image} alt={offerMatched.type}/>
+                  <img className="property__image" src={image} alt={currentOffer.type}/>
                 </div>))}
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              {offerMatched.isPremium &&
+              {currentOffer.isPremium &&
                 <div className="property__mark">
                   <span>Premium</span>
                 </div>}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  {offerMatched.title}
+                  {currentOffer.title}
                 </h1>
-                <button className={offerMatched.isFavorite
+                <button className={currentOffer.isFavorite
                   ? 'property__bookmark-button property__bookmark-button--active button'
                   : 'property__bookmark-button button'} type="button"
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
-                  <span className="visually-hidden">{offerMatched.isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
+                  <span className="visually-hidden">{currentOffer.isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
                 </button>
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{width: `${Math.round(offerMatched.rating) * 20}%`}}></span>
+                  <span style={{width: `${Math.round(currentOffer.rating) * 20}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">{offerMatched.rating}</span>
+                <span className="property__rating-value rating__value">{currentOffer.rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {offerMatched.type}
+                  {currentOffer.type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {offerMatched.bedrooms} Bedrooms
+                  {currentOffer.bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                  Max {offerMatched.maxAdults} adults
+                  Max {currentOffer.maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;{offerMatched.price}</b>
+                <b className="property__price-value">&euro;{currentOffer.price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  {offerMatched.goods.map((thing) => (
+                  {currentOffer.goods.map((thing) => (
                     <li className="property__inside-item" key={thing}>
                       {thing}
                     </li>
@@ -97,32 +105,33 @@ function Property(props) {
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src={offerMatched.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
+                    <img className="property__avatar user__avatar" src={currentOffer.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="property__user-name">
-                    {offerMatched.host.name}
+                    {currentOffer.host.name}
                   </span>
-                  {offerMatched.host.isPro &&
+                  {currentOffer.host.isPro &&
                     <span className="property__user-status">
                       Pro
                     </span>}
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                    {offerMatched.description}
+                    {currentOffer.description}
                   </p>
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ReviewList reviews={reviews}/>
-                <ReviewForm/>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
+                <ReviewsList/>
+                {authorizationStatus === AuthorizationStatus.AUTH
+                  && <ReviewForm/>}
               </section>
             </div>
           </div>
           <section className="property__map map">
             <Map
-              city={offerMatched.city}
+              city={currentOffer.city}
               points={nearOffers}
               changedPin={changedPin}
             />
@@ -144,15 +153,16 @@ function Property(props) {
 }
 
 Property.propTypes = {
-  allOffers: PropTypes.arrayOf(OffersProp),
-  reviews: PropTypes.arrayOf(ReviewsProp),
-  selectedPointId: PropTypes.string.isRequired,
+  offer: PropTypes.object.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
+  fetchDataStatus: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  allOffers: state.allOffers,
-  selectedPointId: state.selectedPointId,
+  authorizationStatus: state.authorizationStatus,
+  offer: state.offer,
+  fetchDataStatus: state.fetchDataStatus,
 });
 
 export {Property};
-export default connect(mapStateToProps, null)(Property);
+export default connect(mapStateToProps)(Property);

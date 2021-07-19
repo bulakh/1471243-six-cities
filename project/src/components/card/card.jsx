@@ -4,17 +4,23 @@ import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/action.js';
 import {Link} from 'react-router-dom';
 import OffersProp from '../property/offers.prop.js';
+import {fetchDataForOffer} from '../../store/api-actions.js';
 
 function Card(props) {
-  const {offer, selectPointId} = props;
+  const {offer, selectPointId, fetchData} = props;
 
   const listCardHoverHandler = (evt) => {
     selectPointId(evt.currentTarget.id);
   };
 
+  const listCardClickHandler = (evt) => {
+    fetchData(evt.currentTarget.id);
+  };
+
   return (
     <article className="cities__place-card place-card"
       onMouseEnter={listCardHoverHandler}
+      onClick={listCardClickHandler}
       id={offer.id}
     >
       {offer.isPremium &&
@@ -60,11 +66,15 @@ function Card(props) {
 Card.propTypes = {
   offer: OffersProp,
   selectPointId: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   selectPointId(id) {
     dispatch(ActionCreator.selectPointId(id));
+  },
+  fetchData(countOffer) {
+    dispatch(fetchDataForOffer(countOffer));
   },
 });
 

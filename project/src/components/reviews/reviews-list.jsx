@@ -1,20 +1,34 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import ReviewItem from './reviews-item.jsx';
-import ReviewsProp from './reviews.prop.js';
+import ReviewsItem from './reviews-item.jsx';
+import {FetchingStatus} from '../../const.js';
 
-function ReviewList(props) {
-  const {reviews} = props;
+function ReviewsList(props) {
+  const {offer, fetchDataStatus} = props;
+
+  const reviews = offer.comments;
 
   return (
-    <ul className="reviews__list">
-      {reviews.map((review) => <ReviewItem review={review} key={review.id}/>)}
-    </ul>
+    <>
+      <ul className="reviews__list">
+        {reviews.map((review) => <ReviewsItem review={review} key={review.id}/>)}
+      </ul>
+      {FetchingStatus.FETCHING_PART === fetchDataStatus &&
+      <p>Loading...</p>}
+    </>
   );
 }
 
-ReviewList.propTypes = {
-  reviews: PropTypes.arrayOf(ReviewsProp),
+ReviewsList.propTypes = {
+  offer: PropTypes.object.isRequired,
+  fetchDataStatus: PropTypes.string.isRequired,
 };
 
-export default ReviewList;
+const mapStateToProps = (state) => ({
+  offer: state.offer,
+  fetchDataStatus: state.fetchDataStatus,
+});
+
+export {ReviewsList};
+export default connect(mapStateToProps)(ReviewsList);

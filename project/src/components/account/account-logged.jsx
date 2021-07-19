@@ -22,10 +22,8 @@ function AccountLogged(props) {
         <li className="header__nav-item">
           <Link
             className="header__nav-link"
-            to={AppRoute.SIGN_IN}
-            onClick={(evt) => {
-              evt.preventDefault();
-
+            to={'#'}
+            onClick={() => {
               logoutAccount();
             }}
           >
@@ -38,7 +36,7 @@ function AccountLogged(props) {
 }
 
 AccountLogged.propTypes = {
-  email: PropTypes.string.isRequired,
+  email: PropTypes.string,
   logoutAccount: PropTypes.func.isRequired,
 };
 

@@ -1,5 +1,5 @@
 import {ActionType} from './action';
-import {cities, AuthorizationStatus, SortType} from '../const';
+import {cities, AuthorizationStatus, SortType, FetchingStatus} from '../const';
 
 const initialState = {
   allOffers: [],
@@ -7,9 +7,10 @@ const initialState = {
   offers: [],
   sort: SortType.POPULAR,
   authorizationStatus: AuthorizationStatus.UNKNOWN,
-  isDataLoaded: false,
+  fetchDataStatus: FetchingStatus.IDLE,
   selectedPointId: '',
   email: '',
+  offer: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,7 +35,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         allOffers: action.payload,
-        isDataLoaded: true,
       };
     case ActionType.REQUIRED_AUTHORIZATION:
       return {
@@ -45,6 +45,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authorizationStatus: AuthorizationStatus.NO_AUTH,
+        email: '',
       };
     case ActionType.SELECT_POINT_ID:
       return {
@@ -55,6 +56,28 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         email: action.payload,
+      };
+    case ActionType.LOAD_OFFER:
+      return {
+        ...state,
+        offer: {
+          offer: action.payload[0],
+          comments: action.payload[1],
+          nearby: action.payload[2],
+        },
+      };
+    case ActionType.LOAD_COMMENTS:
+      return {
+        ...state,
+        offer: {
+          ...state.offer,
+          comments: action.payload,
+        },
+      };
+    case ActionType.FETCH_DATA_STATUS:
+      return {
+        ...state,
+        fetchDataStatus: action.payload,
       };
     default:
       return state;

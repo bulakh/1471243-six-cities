@@ -8,7 +8,7 @@ export default PropTypes.shape({
     PropTypes.number,
   ]).isRequired,
   rating: PropTypes.number.isRequired,
-  user: {
+  user: PropTypes.shape({
     avatarUrl: PropTypes.string.isRequired,
     id: PropTypes.oneOfType([
       PropTypes.string,
@@ -16,5 +16,5 @@ export default PropTypes.shape({
     ]).isRequired,
     isPro: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
-  },
+  }),
 });

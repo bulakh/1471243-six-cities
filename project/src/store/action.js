@@ -8,6 +8,9 @@ export const ActionType = {
   SELECT_POINT_ID: 'SELECT_POINT_ID',
   TAKE_EMAIL: 'TAKE_EMAIL',
   REDIRECT_TO_ROUTE: 'REDIRECT_TO_ROUTE',
+  LOAD_OFFER: 'LOAD_OFFER',
+  FETCH_DATA_STATUS: 'FETCH_DATA_STATUS',
+  LOAD_COMMENTS: 'LOAD_COMMENTS',
 };
 
 export const ActionCreator = {
@@ -45,5 +48,17 @@ export const ActionCreator = {
   redirectToRoute: (url) => ({
     type: ActionType.REDIRECT_TO_ROUTE,
     payload: url,
+  }),
+  loadOffer: (offer) => ({
+    type: ActionType.LOAD_OFFER,
+    payload: offer,
+  }),
+  fetchDataStatus: (status) => ({
+    type: ActionType.FETCH_DATA_STATUS,
+    payload: status,
+  }),
+  loadComments: (comments) => ({
+    type: ActionType.LOAD_COMMENTS,
+    payload: comments,
   }),
 };
