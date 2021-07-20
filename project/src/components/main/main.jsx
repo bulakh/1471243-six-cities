@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {getFilteredOffers} from '../../utils.js';
-import {ActionCreator} from '../../store/action.js';
 import MainEmpty from './main-empty.jsx';
 import CardList from '../card/card-list.jsx';
 import SortList from '../sort/sort-list.jsx';
@@ -11,17 +9,23 @@ import LocationList from '../location/location-list.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 import AccountNotLogged from '../account/account-not-logged.jsx';
 import Map from '../map/map.jsx';
-import OffersProp from '../property/offers.prop.js';
 import {sorting} from '../sort/sort.js';
-import {AuthorizationStatus, cities} from '../../const.js';
+import {AuthorizationStatuses, cities} from '../../const.js';
+import {getAllOffers} from '../../store/data/selectors.js';
+import {getSort} from '../../store/navigation/selectors.js';
+import {getCity} from '../../store/navigation/selectors.js';
+import {getAuthorizationStatus} from '../../store/user/selectors.js';
 
-function Main(props) {
-  const {allOffers, city, sort, fillOffersList, authorizationStatus} = props;
+function Main() {
+
+  const allOffers = useSelector(getAllOffers);
+  const city = useSelector(getCity);
+  const sort = useSelector(getSort);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
   const offersOfOneCity = getFilteredOffers(allOffers, city);
 
-  fillOffersList(offersOfOneCity);
-  fillOffersList(sorting(offersOfOneCity, sort));
+  sorting(offersOfOneCity, sort);
 
   const [showedSort, setShowedSort] = useState(false);
 
@@ -43,7 +47,7 @@ function Main(props) {
         <div className="container">
           <div className="header__wrapper">
             <Logo/>
-            {authorizationStatus === AuthorizationStatus.AUTH
+            {authorizationStatus === AuthorizationStatuses.AUTH
               ? <AccountLogged/>
               : <AccountNotLogged/>}
           </div>
@@ -96,27 +100,4 @@ function Main(props) {
   );
 }
 
-Main.propTypes = {
-  allOffers: PropTypes.arrayOf(OffersProp),
-  fillOffersList: PropTypes.func.isRequired,
-  city: PropTypes.string.isRequired,
-  sort: PropTypes.string.isRequired,
-  authorizationStatus: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  city: state.city,
-  sort: state.sort,
-  allOffers: state.allOffers,
-  authorizationStatus: state.authorizationStatus,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fillOffersList(offers) {
-    dispatch(ActionCreator.fillOffersList(offers));
-  },
-});
-
-export {Main};
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
-
+export default Main;

@@ -1,20 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action.js';
+import {useDispatch} from 'react-redux';
+import {selectPointId} from '../../store/action.js';
 import {Link} from 'react-router-dom';
 import OffersProp from '../property/offers.prop.js';
 import {fetchDataForOffer} from '../../store/api-actions.js';
 
-function Card(props) {
-  const {offer, selectPointId, fetchData} = props;
+function Card({offer}) {
+  const dispatch = useDispatch();
 
   const listCardHoverHandler = (evt) => {
-    selectPointId(evt.currentTarget.id);
+    dispatch(selectPointId(evt.currentTarget.id));
   };
 
   const listCardClickHandler = (evt) => {
-    fetchData(evt.currentTarget.id);
+    dispatch(fetchDataForOffer(evt.currentTarget.id));
   };
 
   return (
@@ -65,18 +64,6 @@ function Card(props) {
 
 Card.propTypes = {
   offer: OffersProp,
-  selectPointId: PropTypes.func.isRequired,
-  fetchData: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  selectPointId(id) {
-    dispatch(ActionCreator.selectPointId(id));
-  },
-  fetchData(countOffer) {
-    dispatch(fetchDataForOffer(countOffer));
-  },
-});
-
-export {Card};
-export default connect(null, mapDispatchToProps)(Card);
+export default Card;

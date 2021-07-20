@@ -1,10 +1,11 @@
 import React, {useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap.jsx';
 import OffersProp from '../property/offers.prop.js';
+import {getSelectedPointId} from '../../store/navigation/selectors.js';
 
 const defaultIcon = L.icon({
   iconUrl: 'img/pin.svg',
@@ -18,8 +19,10 @@ const currentIcon = L.icon({
   iconAnchor: [15, 30],
 });
 
-function Map(props) {
-  const {city, points, changedPin, selectedPointId} = props;
+
+function Map({city, points, changedPin}) {
+
+  const selectedPointId = useSelector(getSelectedPointId);
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -35,7 +38,7 @@ function Map(props) {
           icon: (point.id === parseInt(selectedPointId, 10) && changedPin)
             ? currentIcon
             : defaultIcon,
-        });
+        }).bindPopup(point.title);
         layerGroup.addLayer(marker);
       });
 
@@ -76,12 +79,6 @@ Map.propTypes = {
   }).isRequired,
   points: PropTypes.arrayOf(OffersProp),
   changedPin: PropTypes.bool.isRequired,
-  selectedPointId: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  selectedPointId: state.selectedPointId,
-});
-
-export {Map};
-export default connect(mapStateToProps, null)(Map);
+export default Map;

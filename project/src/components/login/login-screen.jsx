@@ -1,30 +1,24 @@
 import React, {useRef} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {login} from '../../store/api-actions.js';
 import {Link} from 'react-router-dom';
-import {AppRoute, AuthorizationStatus} from '../../const.js';
-import {ActionCreator} from '../../store/action.js';
+import {AppRoute} from '../../const.js';
 import Logo from '../logo/logo.jsx';
 import AccountNotLogged from '../account/account-not-logged.jsx';
 
-function LoginScreen(props) {
-  const {onSubmit, takeEmail, authorizationStatus} = props;
+function LoginScreen() {
+  const dispatch = useDispatch();
   const loginRef = useRef();
   const passwordRef = useRef();
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    onSubmit({
+    dispatch(login({
       login: loginRef.current.value,
       password: passwordRef.current.value,
-    });
+    }));
   };
-
-  if (authorizationStatus === AuthorizationStatus.AUTH) {
-    takeEmail(loginRef.current.value);
-  }
 
   return (
     <div className="page page--gray page--login">
@@ -89,24 +83,4 @@ function LoginScreen(props) {
   );
 }
 
-LoginScreen.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  takeEmail: PropTypes.func.isRequired,
-  authorizationStatus: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit(authData) {
-    dispatch(login(authData));
-  },
-  takeEmail(email) {
-    dispatch(ActionCreator.takeEmail(email));
-  },
-});
-
-export {LoginScreen};
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+export default LoginScreen;

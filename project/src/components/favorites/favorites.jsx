@@ -1,16 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {getUniqCities} from '../../utils.js';
 import Logo from '../logo/logo.jsx';
 import LogoFooter from '../logo/logo.jsx';
 import FavoritesCard from './favorites-card.jsx';
 import AccountLogged from '../account/account-logged.jsx';
-import OffersProp from '../property/offers.prop.js';
+import {getAllOffers} from '../../store/data/selectors.js';
 
-function Favorites(props) {
-  const {allOffers} = props;
+function Favorites() {
+  const allOffers = useSelector(getAllOffers);
 
   const uniqCities = getUniqCities(allOffers);
 
@@ -54,13 +53,4 @@ function Favorites(props) {
   );
 }
 
-Favorites.propTypes = {
-  allOffers: PropTypes.arrayOf(OffersProp),
-};
-
-const mapStateToProps = (state) => ({
-  allOffers: state.allOffers,
-});
-
-export {Favorites};
-export default connect(mapStateToProps, null)(Favorites);
+export default Favorites;

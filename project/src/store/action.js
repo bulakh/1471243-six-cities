@@ -1,64 +1,62 @@
+import {createAction} from '@reduxjs/toolkit';
+
 export const ActionType = {
-  CHANGE_CITY: 'CHANGE_CITY',
-  FILL_OFFERS_LIST: 'FILL_OFFERS_LIST',
-  SORT_OFFERS_LIST: 'SORT_OFFERS_LIST',
-  LOAD_OFFERS: 'LOAD_OFFERS',
-  REQUIRED_AUTHORIZATION: 'REQUIRED_AUTHORIZATION',
-  LOGOUT: 'LOGOUT',
-  SELECT_POINT_ID: 'SELECT_POINT_ID',
-  TAKE_EMAIL: 'TAKE_EMAIL',
-  REDIRECT_TO_ROUTE: 'REDIRECT_TO_ROUTE',
-  LOAD_OFFER: 'LOAD_OFFER',
-  FETCH_DATA_STATUS: 'FETCH_DATA_STATUS',
-  LOAD_COMMENTS: 'LOAD_COMMENTS',
+  CHANGE_CITY: 'navigation/changeCity',
+  SELECT_POINT_ID: 'navigation/selectPointId',
+  REDIRECT_TO_ROUTE: 'navigation/redirectToRoute',
+  SORT_OFFERS_LIST: 'navigation/sortOffersList',
+
+  LOGOUT: 'user/logout',
+  REQUIRED_AUTHORIZATION: 'user/requiredAuthorization',
+  TAKE_EMAIL: 'user/takeEmail',
+
+  LOAD_OFFER: 'data/loadOffer',
+  LOAD_OFFERS: 'data/loadOffers',
+  LOAD_COMMENTS: 'data/loadComments',
+  FETCH_DATA_STATUS: 'data/fetchDataStatus',
 };
 
-export const ActionCreator = {
-  changeCity: (name) => ({
-    type: ActionType.CHANGE_CITY,
-    payload: name,
-  }),
-  fillOffersList: (offers) => ({
-    type: ActionType.FILL_OFFERS_LIST,
-    payload: offers,
-  }),
-  sortOffersList: (variant) => ({
-    type: ActionType.SORT_OFFERS_LIST,
-    payload: variant,
-  }),
-  loadOffers: (offers) => ({
-    type: ActionType.LOAD_OFFERS,
-    payload: offers,
-  }),
-  requireAuthorization: (status) => ({
-    type: ActionType.REQUIRED_AUTHORIZATION,
-    payload: status,
-  }),
-  logout: () => ({
-    type: ActionType.LOGOUT,
-  }),
-  selectPointId: (id) => ({
-    type: ActionType.SELECT_POINT_ID,
-    payload: id,
-  }),
-  takeEmail: (email) => ({
-    type: ActionType.TAKE_EMAIL,
-    payload: email,
-  }),
-  redirectToRoute: (url) => ({
-    type: ActionType.REDIRECT_TO_ROUTE,
-    payload: url,
-  }),
-  loadOffer: (offer) => ({
-    type: ActionType.LOAD_OFFER,
-    payload: offer,
-  }),
-  fetchDataStatus: (status) => ({
-    type: ActionType.FETCH_DATA_STATUS,
-    payload: status,
-  }),
-  loadComments: (comments) => ({
-    type: ActionType.LOAD_COMMENTS,
-    payload: comments,
-  }),
-};
+
+export const changeCity = createAction(ActionType.CHANGE_CITY, (name) => ({
+  payload: name,
+}));
+
+export const selectPointId = createAction(ActionType.SELECT_POINT_ID, (id) => ({
+  payload: id,
+}));
+
+export const redirectToRoute = createAction(ActionType.REDIRECT_TO_ROUTE, (url) => ({
+  payload: url,
+}));
+
+export const sortOffersList = createAction(ActionType.SORT_OFFERS_LIST, (variant) => ({
+  payload: variant,
+}));
+
+export const logout = createAction(ActionType.LOGOUT);
+
+export const requireAuthorization = createAction(ActionType.REQUIRED_AUTHORIZATION,(status) => ({
+  payload: status,
+}));
+
+export const takeEmail = createAction(ActionType.TAKE_EMAIL, (email) => ({
+  payload: email,
+}));
+
+export const loadOffer = createAction(ActionType.LOAD_OFFER, (offer) => ({
+  payload: offer,
+}));
+
+export const loadOffers = createAction(ActionType.LOAD_OFFERS, (offers) => ({
+  payload: offers,
+}));
+
+export const loadComments = createAction(ActionType.LOAD_COMMENTS, (comments) => ({
+  payload: comments,
+}));
+
+export const fetchDataStatus = createAction(ActionType.FETCH_DATA_STATUS, (status) => ({
+  payload: status,
+}));
+
+

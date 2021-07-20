@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {Router as BrowserRouter, Switch, Route} from 'react-router-dom';
 import {AppRoute, FetchingStatus} from '../../const.js';
 import Main from '../main/main.jsx';
@@ -13,9 +12,12 @@ import NotFoundPage from '../not-found-page/not-found-page.jsx';
 import LoadingScreen from '../loading-screen/loading-screen.jsx';
 import {isCheckedAuth} from '../../utils.js';
 import browserHistory from '../../browser-history.js';
+import {getAuthorizationStatus} from '../../store/user/selectors.js';
+import {getFetchDataStatus} from '../../store/data/selectors.js';
 
-function App(props) {
-  const {authorizationStatus, fetchDataStatus} = props;
+function App() {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const fetchDataStatus = useSelector(getFetchDataStatus);
 
   if (isCheckedAuth(authorizationStatus) || fetchDataStatus === FetchingStatus.FETCHING) {
     return (
@@ -49,15 +51,4 @@ function App(props) {
   );
 }
 
-App.propTypes = {
-  authorizationStatus: PropTypes.string.isRequired,
-  fetchDataStatus: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  fetchDataStatus: state.fetchDataStatus,
-});
-
-export {App};
-export default connect(mapStateToProps)(App);
+export default App;

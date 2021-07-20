@@ -41,7 +41,7 @@ export const SortType = {
   TOP_RATED: 'Top rated first',
 };
 
-export const AuthorizationStatus = {
+export const AuthorizationStatuses = {
   AUTH: 'AUTH',
   NO_AUTH: 'NO_AUTH',
   UNKNOWN: 'UNKNOWN',

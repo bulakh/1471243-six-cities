@@ -1,13 +1,15 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const.js';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {logout} from '../../store/api-actions';
+import {getEmail} from '../../store/user/selectors.js';
 
 
-function AccountLogged(props) {
-  const {email, logoutAccount} = props;
+function AccountLogged() {
+
+  const email = useSelector(getEmail);
+  const dispatch = useDispatch();
 
   return (
     <nav className="header__nav">
@@ -20,36 +22,21 @@ function AccountLogged(props) {
           </Link>
         </li>
         <li className="header__nav-item">
-          <Link
+          <button
             className="header__nav-link"
-            to={'#'}
-            onClick={() => {
-              logoutAccount();
+            style={{
+              border: 'none',
+              backgroundColor: 'transparent',
+              cursor: 'pointer',
             }}
+            onClick={() => dispatch(logout())}
           >
             <span className="header__signout">Sign out</span>
-          </Link>
+          </button>
         </li>
       </ul>
     </nav>
   );
 }
 
-AccountLogged.propTypes = {
-  email: PropTypes.string,
-  logoutAccount: PropTypes.func.isRequired,
-};
-
-
-const mapStateToProps = (state) => ({
-  email: state.email,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  logoutAccount() {
-    dispatch(logout());
-  },
-});
-
-export {AccountLogged};
-export default connect(mapStateToProps, mapDispatchToProps)(AccountLogged);
+export default AccountLogged;

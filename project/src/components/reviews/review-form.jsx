@@ -1,12 +1,11 @@
 import React, {useState, useRef} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {valueRatings} from '../../const.js';
 import {postComment} from '../../store/api-actions.js';
 
-function ReviewForm(props) {
+function ReviewForm() {
 
-  const {postReview} = props;
+  const dispatch = useDispatch();
 
   const CURRENT_OFFER = window.location.pathname.replace(/\/offer[/]/, '');
   const MIN_LENGTH_TEXT = 50;
@@ -25,10 +24,10 @@ function ReviewForm(props) {
   };
 
   const handleSubmit = (evt) => {
+    evt.preventDefault();
     setComment('');
     setRate('');
-    evt.preventDefault();
-    postReview(CURRENT_OFFER, getReview(comment, rate));
+    dispatch(postComment(CURRENT_OFFER, getReview(comment, rate)));
     formRef.current.reset();
   };
 
@@ -86,19 +85,4 @@ function ReviewForm(props) {
   );
 }
 
-ReviewForm.propTypes = {
-  postReview: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  postReview(hotelId, review) {
-    dispatch(postComment(hotelId, review));
-  },
-});
-
-export {ReviewForm};
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewForm);
+export default ReviewForm;
