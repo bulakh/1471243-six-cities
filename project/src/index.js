@@ -1,35 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore, applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
+import {configureStore} from '@reduxjs/toolkit';
 import {createAPI} from './services/api.js';
 import {Provider} from 'react-redux';
-import {composeWithDevTools} from 'redux-devtools-extension';
 import App from './components/app/app.jsx';
-import {reducer} from './store/reducer.js';
-import {ActionCreator} from './store/action.js';
+import rootReducer from './store/root-reducer.js';
+import {requireAuthorization, takeEmail} from './store/action.js';
 import {checkAuth, fetchOffersList, fetchDataForOffer} from './store/api-actions.js';
-import {AuthorizationStatus} from './const.js';
+import {AuthorizationStatuses} from './const.js';
 import {redirect} from './store/middlewares/redirect';
 
 const CURRENT_OFFER = window.location.pathname.replace(/\/offer[/]/, '');
 
 const api = createAPI(
-  () => store.dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH)),
+  () => store.dispatch(requireAuthorization(AuthorizationStatuses.NO_AUTH)),
 );
 
-const store = createStore(
-  reducer,
-  composeWithDevTools(
-    applyMiddleware(thunk.withExtraArgument(api)),
-    applyMiddleware(redirect),
-  ),
-);
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: {
+        extraArgument: api,
+      },
+    }).concat(redirect),
+});
 
 
 store.dispatch(checkAuth());
 store.dispatch(fetchOffersList());
-store.dispatch(ActionCreator.takeEmail(localStorage.email));
+store.dispatch(takeEmail(localStorage.email));
 
 if (CURRENT_OFFER !== '/') {
   store.dispatch(fetchDataForOffer(CURRENT_OFFER));

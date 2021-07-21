@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Logo from '../logo/logo.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 import AccountNotLogged from '../account/account-not-logged.jsx';
@@ -9,10 +8,16 @@ import ReviewForm from '../reviews/review-form.jsx';
 import ReviewsList from '../reviews/reviews-list.jsx';
 import Map from '../map/map.jsx';
 import LoadingScreen from '../loading-screen/loading-screen.jsx';
-import {AuthorizationStatus, FetchingStatus} from '../../const.js';
+import {AuthorizationStatuses, FetchingStatus} from '../../const.js';
+import {getAuthorizationStatus} from '../../store/user/selectors.js';
+import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
 
-function Property(props) {
-  const {offer, authorizationStatus, fetchDataStatus} = props;
+function Property() {
+
+  const offer = useSelector(getOffer);
+  const fetchDataStatus = useSelector(getFetchDataStatus);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+
   const currentOffer = offer.offer;
   const comments = offer.comments;
   const nearOffers = offer.nearby;
@@ -32,7 +37,7 @@ function Property(props) {
         <div className="container">
           <div className="header__wrapper">
             <Logo/>
-            {authorizationStatus === AuthorizationStatus.AUTH
+            {authorizationStatus === AuthorizationStatuses.AUTH
               ? <AccountLogged/>
               : <AccountNotLogged/>}
           </div>
@@ -124,7 +129,7 @@ function Property(props) {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
                 <ReviewsList/>
-                {authorizationStatus === AuthorizationStatus.AUTH
+                {authorizationStatus === AuthorizationStatuses.AUTH
                   && <ReviewForm/>}
               </section>
             </div>
@@ -152,17 +157,4 @@ function Property(props) {
   );
 }
 
-Property.propTypes = {
-  offer: PropTypes.object.isRequired,
-  authorizationStatus: PropTypes.string.isRequired,
-  fetchDataStatus: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  offer: state.offer,
-  fetchDataStatus: state.fetchDataStatus,
-});
-
-export {Property};
-export default connect(mapStateToProps)(Property);
+export default Property;

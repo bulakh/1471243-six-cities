@@ -1,4 +1,4 @@
-import {AuthorizationStatus} from './const';
+import {AuthorizationStatuses} from './const';
 import {offerAdaptToClient, commentAdaptToClient} from './store/adapter.js';
 
 export const getUniqCities = (offers) => {
@@ -12,7 +12,7 @@ export const getFilteredOffers = (offers, city) =>
   offers.filter((offer) => offer.city.name === city);
 
 export const isCheckedAuth = (authorizationStatus) =>
-  authorizationStatus === AuthorizationStatus.UNKNOWN;
+  authorizationStatus === AuthorizationStatuses.UNKNOWN;
 
 export const adaptedOffers = (offers) => {
   const adaptOffers = [];
@@ -30,4 +30,14 @@ export const adaptedComments = (comments) => {
     adaptComments.push(commentAdaptToClient(comment));
   });
   return adaptComments;
+};
+
+export const getHeaders = (token) => {
+  const headers = {
+    headers: {
+      'x-token': token,
+    },
+  };
+
+  return headers;
 };

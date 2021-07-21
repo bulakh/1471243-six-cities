@@ -1,20 +1,21 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action';
+import {useSelector, useDispatch} from 'react-redux';
+import {changeCity} from '../../store/action';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const.js';
+import {getCity} from '../../store/navigation/selectors.js';
 
-function Location(props) {
-  const {name, city, changeCity} = props;
+function Location({name}) {
+  const city = useSelector(getCity);
+  const dispatch = useDispatch();
 
-  const activeClass = 'tabs__item--active';
-
+  const ACTIVE_CLASS = 'tabs__item--active';
 
   return (
     <li className="locations__item">
-      <Link to={AppRoute.MAIN} className={`locations__item-link tabs__item ${ name === city ? activeClass : ''}`} onClick = {(evt) => {
-        changeCity(evt.target.textContent);
+      <Link to={AppRoute.MAIN} className={`locations__item-link tabs__item ${ name === city ? ACTIVE_CLASS : ''}`} onClick = {(evt) => {
+        dispatch(changeCity(evt.target.textContent));
       }}
       >
         <span>{name}</span>
@@ -25,19 +26,6 @@ function Location(props) {
 
 Location.propTypes = {
   name: PropTypes.string.isRequired,
-  city: PropTypes.string.isRequired,
-  changeCity: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  city: state.city,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  changeCity(name) {
-    dispatch(ActionCreator.changeCity(name));
-  },
-});
-
-export {Location};
-export default connect(mapStateToProps, mapDispatchToProps)(Location);
+export default Location;

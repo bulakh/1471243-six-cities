@@ -1,11 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import {useSelector} from 'react-redux';
 import ReviewsItem from './reviews-item.jsx';
 import {FetchingStatus} from '../../const.js';
+import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
 
-function ReviewsList(props) {
-  const {offer, fetchDataStatus} = props;
+function ReviewsList() {
+  const offer = useSelector(getOffer);
+  const fetchDataStatus = useSelector(getFetchDataStatus);
 
   const reviews = offer.comments;
 
@@ -20,15 +21,4 @@ function ReviewsList(props) {
   );
 }
 
-ReviewsList.propTypes = {
-  offer: PropTypes.object.isRequired,
-  fetchDataStatus: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  offer: state.offer,
-  fetchDataStatus: state.fetchDataStatus,
-});
-
-export {ReviewsList};
-export default connect(mapStateToProps)(ReviewsList);
+export default ReviewsList;
