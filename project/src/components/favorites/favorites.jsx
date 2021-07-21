@@ -3,15 +3,27 @@ import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {getUniqCities} from '../../utils.js';
 import Logo from '../logo/logo.jsx';
-import LogoFooter from '../logo/logo.jsx';
+import LogoFooter from '../logo/logo-footer.jsx';
 import FavoritesCard from './favorites-card.jsx';
 import AccountLogged from '../account/account-logged.jsx';
-import {getAllOffers} from '../../store/data/selectors.js';
+import {getFavorites} from '../../store/data/selectors.js';
+import FavoritesEmpty from './favorites-empty.jsx';
+// import {fetchFavorites} from '../../store/api-actions.js';
+
 
 function Favorites() {
-  const allOffers = useSelector(getAllOffers);
+  const favoriteOffers = useSelector(getFavorites);
+  // const dispatch = useDispatch();
 
-  const uniqCities = getUniqCities(allOffers);
+  // dispatch(fetchFavorites());
+
+  const uniqCities = getUniqCities(favoriteOffers);
+
+  if (favoriteOffers.length === 0) {
+    return (
+      <FavoritesEmpty/>
+    );
+  }
 
   return (
     <div className="page">
@@ -39,7 +51,7 @@ function Favorites() {
                     </div>
                   </div>
                   <div className="favorites__places">
-                    {allOffers.map((offer) => offer.isFavorite && offer.city.name === city && <FavoritesCard offer={offer} key={offer.id}/>)}
+                    {favoriteOffers.map((offer) => offer.isFavorite && offer.city.name === city && <FavoritesCard offer={offer} key={offer.id}/>)}
                   </div>
                 </li>))}
             </ul>

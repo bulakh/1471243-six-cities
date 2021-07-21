@@ -1,11 +1,13 @@
 import React, {useState, useRef} from 'react';
-import {useDispatch} from 'react-redux';
-import {valueRatings} from '../../const.js';
-import {postComment} from '../../store/api-actions.js';
+import {useDispatch, useSelector} from 'react-redux';
+import {valueRatings, FetchingStatus} from '../../const.js';
+import {postGetComment} from '../../store/api-actions.js';
+import {getFetchDataStatus} from '../../store/data/selectors.js';
 
 function ReviewForm() {
 
   const dispatch = useDispatch();
+  const fetchDataStatus = useSelector(getFetchDataStatus);
 
   const CURRENT_OFFER = window.location.pathname.replace(/\/offer[/]/, '');
   const MIN_LENGTH_TEXT = 50;
@@ -27,7 +29,7 @@ function ReviewForm() {
     evt.preventDefault();
     setComment('');
     setRate('');
-    dispatch(postComment(CURRENT_OFFER, getReview(comment, rate)));
+    dispatch(postGetComment(CURRENT_OFFER, getReview(comment, rate)));
     formRef.current.reset();
   };
 
@@ -41,7 +43,7 @@ function ReviewForm() {
 
   let blockedBtn = false;
 
-  if (comment === '' || comment.split('').length < MIN_LENGTH_TEXT || rate === '') {
+  if (comment === '' || comment.split('').length < MIN_LENGTH_TEXT || rate === '' || fetchDataStatus !== FetchingStatus.IDLE) {
     blockedBtn = true;
   }
 

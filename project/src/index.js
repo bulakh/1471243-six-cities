@@ -6,8 +6,8 @@ import {Provider} from 'react-redux';
 import App from './components/app/app.jsx';
 import rootReducer from './store/root-reducer.js';
 import {requireAuthorization, takeEmail} from './store/action.js';
-import {checkAuth, fetchOffersList, fetchDataForOffer} from './store/api-actions.js';
-import {AuthorizationStatuses} from './const.js';
+import {checkAuth, fetchOffersList, fetchDataForOffer, fetchFavorites} from './store/api-actions.js';
+import {AuthorizationStatuses, AppRoute} from './const.js';
 import {redirect} from './store/middlewares/redirect';
 
 const CURRENT_OFFER = window.location.pathname.replace(/\/offer[/]/, '');
@@ -31,8 +31,12 @@ store.dispatch(checkAuth());
 store.dispatch(fetchOffersList());
 store.dispatch(takeEmail(localStorage.email));
 
-if (CURRENT_OFFER !== '/') {
+if (!isNaN(parseInt(CURRENT_OFFER, 10))) {
   store.dispatch(fetchDataForOffer(CURRENT_OFFER));
+}
+
+if (CURRENT_OFFER === AppRoute.FAVORITES) {
+  store.dispatch(fetchFavorites());
 }
 
 ReactDOM.render(

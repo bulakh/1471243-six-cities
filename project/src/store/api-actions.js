@@ -1,7 +1,9 @@
 import {fetchDataStatus,
   loadOffers,
   loadOffer,
+  updateOffer,
   loadComments,
+  loadFavorites,
   logout as closeSession,
   requireAuthorization,
   takeEmail,
@@ -14,7 +16,7 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(APIRoute.HOTELS)
     .then(({data}) => {
       dispatch(fetchDataStatus(FetchingStatus.FETCHING));
-      dispatch(loadOffers(data.map(offerAdaptToClient)));
+      dispatch(loadOffers(adaptedOffers(data)));
     })
     .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
     .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
@@ -37,7 +39,7 @@ export const fetchDataForOffer = (hotelId) => (dispatch, _getState, api) => (
     .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
 );
 
-export const postComment = (hotelId, {comment, rating}) => (dispatch, _getState, api) => (
+export const postGetComment = (hotelId, {comment, rating}) => (dispatch, _getState, api) => (
   api.post(`${APIRoute.COMMENTS}/${hotelId}`,
     {comment, rating},
     getHeaders(localStorage.getItem('token')))
@@ -50,6 +52,30 @@ export const postComment = (hotelId, {comment, rating}) => (dispatch, _getState,
       .catch(() => {}),
     )
 );
+
+
+export const fetchFavorites = () => (dispatch, _getState, api) => (
+  api.get(APIRoute.FAVORITE, getHeaders(localStorage.getItem('token')))
+    .then(({data}) => {
+      dispatch(fetchDataStatus(FetchingStatus.FETCHING));
+      dispatch(loadFavorites(adaptedOffers(data)));
+    })
+    .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
+    .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
+);
+
+export const postGetFavorites = (hotelId, status) => (dispatch, _getState, api) => (
+  api.post(`${APIRoute.FAVORITE}/${hotelId}/${status}`, null ,getHeaders(localStorage.getItem('token')))
+    .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHING_PART)))
+    .then(() => api.get(`${APIRoute.HOTELS}/${hotelId}`, getHeaders(localStorage.getItem('token')))
+      .then(({data}) => dispatch(updateOffer(offerAdaptToClient(data))))
+      .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHING_PART)))
+      .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
+      .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
+      .catch(() => {}),
+    )
+);
+
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoute.LOGIN)

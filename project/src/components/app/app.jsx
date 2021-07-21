@@ -5,7 +5,6 @@ import {AppRoute, FetchingStatus} from '../../const.js';
 import Main from '../main/main.jsx';
 import Login from '../login/login-screen.jsx';
 import Favorites from '../favorites/favorites.jsx';
-// import FavoritesEmpty from '../favorites/favorites-empty.jsx';
 import Property from '../property/property.jsx';
 import PrivateRoute from '../private-route/private-route';
 import NotFoundPage from '../not-found-page/not-found-page.jsx';

@@ -13,6 +13,8 @@ export const ActionType = {
   LOAD_OFFER: 'data/loadOffer',
   LOAD_OFFERS: 'data/loadOffers',
   LOAD_COMMENTS: 'data/loadComments',
+  LOAD_FAVORITES: 'data/loadFavorites',
+  UPDATE_OFFER: 'data/updateOffer',
   FETCH_DATA_STATUS: 'data/fetchDataStatus',
 };
 
@@ -53,6 +55,14 @@ export const loadOffers = createAction(ActionType.LOAD_OFFERS, (offers) => ({
 
 export const loadComments = createAction(ActionType.LOAD_COMMENTS, (comments) => ({
   payload: comments,
+}));
+
+export const loadFavorites = createAction(ActionType.LOAD_FAVORITES, (favorites) => ({
+  payload: favorites,
+}));
+
+export const updateOffer = createAction(ActionType.UPDATE_OFFER, (offer) => ({
+  payload: offer,
 }));
 
 export const fetchDataStatus = createAction(ActionType.FETCH_DATA_STATUS, (status) => ({

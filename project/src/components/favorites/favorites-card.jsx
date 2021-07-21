@@ -1,9 +1,19 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 import OffersProp from '../property/offers.prop.js';
+import {postGetFavorites, fetchFavorites} from '../../store/api-actions.js';
+import {getFetchDataStatus} from '../../store/data/selectors.js';
+import {FavoriteStatus, FetchingStatus} from '../../const.js';
 
-function FavoritesCard(props) {
-  const {offer} = props;
+function FavoritesCard({offer}) {
+  const dispatch = useDispatch();
+  const fetchDataStatus = useSelector(getFetchDataStatus);
+
+  const removeFavorite = () => {
+    dispatch(postGetFavorites(offer.id, FavoriteStatus.FALSE))
+      .then(() => dispatch(fetchFavorites()));
+  };
 
   return (
     <article className="favorites__card place-card">
@@ -18,12 +28,13 @@ function FavoritesCard(props) {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">In bookmarks</span>
-          </button>
+          {FetchingStatus.IDLE === fetchDataStatus &&
+            <button onClick={removeFavorite} className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+              <svg className="place-card__bookmark-icon" width="18" height="19">
+                <use xlinkHref="#icon-bookmark"></use>
+              </svg>
+              <span className="visually-hidden">In bookmarks</span>
+            </button>}
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
