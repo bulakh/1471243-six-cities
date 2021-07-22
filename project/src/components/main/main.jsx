@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useSelector} from 'react-redux';
 import {getFilteredOffers} from '../../utils.js';
 import MainEmpty from './main-empty.jsx';
@@ -15,6 +15,7 @@ import {getAllOffers} from '../../store/data/selectors.js';
 import {getSort} from '../../store/navigation/selectors.js';
 import {getCity} from '../../store/navigation/selectors.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
+import useToggle from '../../hooks/useToggle.js';
 
 function Main() {
 
@@ -22,16 +23,11 @@ function Main() {
   const city = useSelector(getCity);
   const sort = useSelector(getSort);
   const authorizationStatus = useSelector(getAuthorizationStatus);
+  const [showSort, toggleShowSort] = useToggle(false);
 
   const offersOfOneCity = getFilteredOffers(allOffers, city);
 
   sorting(offersOfOneCity, sort);
-
-  const [showedSort, setShowedSort] = useState(false);
-
-  const toggleSort = () => {
-    setShowedSort(!showedSort);
-  };
 
   const changedPin = true;
 
@@ -67,7 +63,7 @@ function Main() {
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offersOfOneCity.length} places to stay in {city}</b>
               <form className="places__sorting" action="#" method="get"
-                onClick = {toggleSort}
+                onClick = {toggleShowSort}
               >
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex="0">
@@ -76,7 +72,7 @@ function Main() {
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
-                <SortList offers={offersOfOneCity} active={showedSort}/>
+                <SortList offers={offersOfOneCity} active={showSort}/>
               </form>
               <div className="cities__places-list places__list tabs__content">
                 <CardList

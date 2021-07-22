@@ -63,3 +63,8 @@ export const FetchingStatus = {
   FETCHED: 'FETCHED',
   FAILED: 'FAILED',
 };
+
+export const FavoriteStatus = {
+  TRUE: '1',
+  FALSE: '0',
+};

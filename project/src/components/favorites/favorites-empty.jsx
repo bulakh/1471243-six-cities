@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../logo/logo.jsx';
-import LogoFooter from '../logo/logo.jsx';
+import LogoFooter from '../logo/logo-footer.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 
 function FavoritesEmpty() {

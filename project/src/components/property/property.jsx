@@ -1,5 +1,6 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import Logo from '../logo/logo.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 import AccountNotLogged from '../account/account-not-logged.jsx';
@@ -8,21 +9,35 @@ import ReviewForm from '../reviews/review-form.jsx';
 import ReviewsList from '../reviews/reviews-list.jsx';
 import Map from '../map/map.jsx';
 import LoadingScreen from '../loading-screen/loading-screen.jsx';
-import {AuthorizationStatuses, FetchingStatus} from '../../const.js';
+import {AuthorizationStatuses, FetchingStatus, AppRoute, FavoriteStatus} from '../../const.js';
+import {postGetFavorites} from '../../store/api-actions.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
 import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
+import useToggle from '../../hooks/useToggle.js';
 
 function Property() {
 
   const offer = useSelector(getOffer);
   const fetchDataStatus = useSelector(getFetchDataStatus);
   const authorizationStatus = useSelector(getAuthorizationStatus);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const currentOffer = offer.offer;
   const comments = offer.comments;
   const nearOffers = offer.nearby;
 
   const changedPin = false;
+  const [isActive, toggleActive] = useToggle(currentOffer.isFavorite);
+
+  const toggleToFavorites = () => {
+    if (authorizationStatus !== AuthorizationStatuses.AUTH) {
+      history.push(AppRoute.SIGN_IN);
+    } else {
+      toggleActive();
+      dispatch(postGetFavorites(currentOffer.id, isActive ? FavoriteStatus.FALSE : FavoriteStatus.TRUE));
+    }
+  };
 
 
   if (fetchDataStatus === FetchingStatus.FETCHING) {
@@ -64,15 +79,19 @@ function Property() {
                 <h1 className="property__name">
                   {currentOffer.title}
                 </h1>
-                <button className={currentOffer.isFavorite
-                  ? 'property__bookmark-button property__bookmark-button--active button'
-                  : 'property__bookmark-button button'} type="button"
-                >
-                  <svg className="property__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">{currentOffer.isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
-                </button>
+                {fetchDataStatus === FetchingStatus.IDLE &&
+                  <button
+                    className={isActive
+                      ? 'property__bookmark-button property__bookmark-button--active button'
+                      : 'property__bookmark-button button'}
+                    type="button"
+                    onClick={toggleToFavorites}
+                  >
+                    <svg className="property__bookmark-icon" width="31" height="33">
+                      <use xlinkHref="#icon-bookmark"></use>
+                    </svg>
+                    <span className="visually-hidden">{isActive ? 'In bookmarks' : 'To bookmarks'}</span>
+                  </button>}
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
