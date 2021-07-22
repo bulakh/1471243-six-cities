@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectPointId} from '../../store/action.js';
 import {Link, useHistory} from 'react-router-dom';
@@ -8,15 +7,16 @@ import {fetchDataForOffer, postGetFavorites} from '../../store/api-actions.js';
 import {AuthorizationStatuses, AppRoute, FavoriteStatus, FetchingStatus} from '../../const.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
 import {getFetchDataStatus} from '../../store/data/selectors.js';
-import {withToggle} from '../../hooks/withToggle.jsx';
+import useToggle from '../../hooks/useToggle.js';
 
 
-function Card({offer, isActive, onActiveChange}) {
+function Card({offer}) {
 
   const dispatch = useDispatch();
   const history = useHistory();
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const fetchDataStatus = useSelector(getFetchDataStatus);
+  const [isActive, toggleActive] = useToggle(offer.isFavorite);
 
   const listCardHoverHandler = (evt) => {
     dispatch(selectPointId(evt.currentTarget.id));
@@ -26,13 +26,11 @@ function Card({offer, isActive, onActiveChange}) {
     dispatch(fetchDataForOffer(evt.currentTarget.id));
   };
 
-  isActive = offer.isFavorite;
-
   const toggleToFavorites = () => {
     if (authorizationStatus !== AuthorizationStatuses.AUTH) {
       history.push(AppRoute.SIGN_IN);
     } else {
-      onActiveChange();
+      toggleActive();
       dispatch(postGetFavorites(offer.id, isActive ? FavoriteStatus.FALSE : FavoriteStatus.TRUE));
     }
   };
@@ -98,8 +96,6 @@ function Card({offer, isActive, onActiveChange}) {
 
 Card.propTypes = {
   offer: OffersProp,
-  isActive: PropTypes.bool.isRequired,
-  onActiveChange: PropTypes.func.isRequired,
 };
 
-export default withToggle(Card);
+export default Card;

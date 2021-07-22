@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {useSelector, useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import Logo from '../logo/logo.jsx';
@@ -14,9 +13,9 @@ import {AuthorizationStatuses, FetchingStatus, AppRoute, FavoriteStatus} from '.
 import {postGetFavorites} from '../../store/api-actions.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
 import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
-import {withToggle} from '../../hooks/withToggle.jsx';
+import useToggle from '../../hooks/useToggle.js';
 
-function Property({isActive, onActiveChange}) {
+function Property() {
 
   const offer = useSelector(getOffer);
   const fetchDataStatus = useSelector(getFetchDataStatus);
@@ -29,13 +28,13 @@ function Property({isActive, onActiveChange}) {
   const nearOffers = offer.nearby;
 
   const changedPin = false;
-  isActive = currentOffer.isFavorite;
+  const [isActive, toggleActive] = useToggle(currentOffer.isFavorite);
 
   const toggleToFavorites = () => {
     if (authorizationStatus !== AuthorizationStatuses.AUTH) {
       history.push(AppRoute.SIGN_IN);
     } else {
-      onActiveChange();
+      toggleActive();
       dispatch(postGetFavorites(currentOffer.id, isActive ? FavoriteStatus.FALSE : FavoriteStatus.TRUE));
     }
   };
@@ -177,9 +176,4 @@ function Property({isActive, onActiveChange}) {
   );
 }
 
-Property.propTypes = {
-  isActive: PropTypes.bool.isRequired,
-  onActiveChange: PropTypes.func.isRequired,
-};
-
-export default withToggle(Property);
+export default Property;

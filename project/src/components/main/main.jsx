@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import {getFilteredOffers} from '../../utils.js';
 import MainEmpty from './main-empty.jsx';
@@ -16,16 +15,15 @@ import {getAllOffers} from '../../store/data/selectors.js';
 import {getSort} from '../../store/navigation/selectors.js';
 import {getCity} from '../../store/navigation/selectors.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
-// import {getFetchDataStatus} from '../../store/data/selectors.js';
-import {withToggle} from '../../hooks/withToggle.jsx';
+import useToggle from '../../hooks/useToggle.js';
 
-function Main({isActive, onActiveChange}) {
+function Main() {
 
   const allOffers = useSelector(getAllOffers);
   const city = useSelector(getCity);
   const sort = useSelector(getSort);
   const authorizationStatus = useSelector(getAuthorizationStatus);
-  // const fetchDataStatus = useSelector(getFetchDataStatus);
+  const [showSort, toggleShowSort] = useToggle(false);
 
   const offersOfOneCity = getFilteredOffers(allOffers, city);
 
@@ -65,7 +63,7 @@ function Main({isActive, onActiveChange}) {
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offersOfOneCity.length} places to stay in {city}</b>
               <form className="places__sorting" action="#" method="get"
-                onClick = {onActiveChange}
+                onClick = {toggleShowSort}
               >
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex="0">
@@ -74,11 +72,9 @@ function Main({isActive, onActiveChange}) {
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
-                <SortList offers={offersOfOneCity} active={isActive}/>
+                <SortList offers={offersOfOneCity} active={showSort}/>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {/* {FetchingStatus.FETCHING_PART === fetchDataStatus &&
-                <p>Loading...</p>} */}
                 <CardList
                   offers={offersOfOneCity}
                 />
@@ -100,9 +96,4 @@ function Main({isActive, onActiveChange}) {
   );
 }
 
-Main.propTypes = {
-  isActive: PropTypes.bool.isRequired,
-  onActiveChange: PropTypes.func.isRequired,
-};
-
-export default withToggle(Main);
+export default Main;
