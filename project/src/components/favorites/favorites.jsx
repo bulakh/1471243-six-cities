@@ -8,14 +8,10 @@ import FavoritesCard from './favorites-card.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 import {getFavorites} from '../../store/data/selectors.js';
 import FavoritesEmpty from './favorites-empty.jsx';
-// import {fetchFavorites} from '../../store/api-actions.js';
 
 
 function Favorites() {
   const favoriteOffers = useSelector(getFavorites);
-  // const dispatch = useDispatch();
-
-  // dispatch(fetchFavorites());
 
   const uniqCities = getUniqCities(favoriteOffers);
 

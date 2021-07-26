@@ -48,6 +48,7 @@ function LoginScreen() {
                   type="email"
                   name="email"
                   placeholder="Email"
+                  data-testid="login"
                   required=""
                 />
               </div>
@@ -59,6 +60,7 @@ function LoginScreen() {
                   type="password"
                   name="password"
                   placeholder="Password"
+                  data-testid="password"
                   required=""
                 />
               </div>

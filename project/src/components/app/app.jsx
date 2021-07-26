@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {Router as BrowserRouter, Switch, Route} from 'react-router-dom';
+import {Switch, Route} from 'react-router-dom';
 import {AppRoute, FetchingStatus} from '../../const.js';
 import Main from '../main/main.jsx';
 import Login from '../login/login-screen.jsx';
@@ -10,7 +10,6 @@ import PrivateRoute from '../private-route/private-route';
 import NotFoundPage from '../not-found-page/not-found-page.jsx';
 import LoadingScreen from '../loading-screen/loading-screen.jsx';
 import {isCheckedAuth} from '../../utils.js';
-import browserHistory from '../../browser-history.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
 import {getFetchDataStatus} from '../../store/data/selectors.js';
 
@@ -25,28 +24,26 @@ function App() {
   }
 
   return (
-    <BrowserRouter history={browserHistory}>
-      <Switch>
-        <Route exact path={AppRoute.MAIN}>
-          <Main/>
-        </Route>
-        <Route exact path={AppRoute.SIGN_IN}>
-          <Login/>
-        </Route>
-        <PrivateRoute
-          exact
-          path={AppRoute.FAVORITES}
-          render={() => <Favorites/>}
-        >
-        </PrivateRoute>
-        <Route exact path={AppRoute.ROOM}>
-          <Property/>
-        </Route>
-        <Route>
-          <NotFoundPage/>
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route exact path={AppRoute.MAIN}>
+        <Main/>
+      </Route>
+      <Route exact path={AppRoute.SIGN_IN}>
+        <Login/>
+      </Route>
+      <PrivateRoute
+        exact
+        path={AppRoute.FAVORITES}
+        render={() => <Favorites/>}
+      >
+      </PrivateRoute>
+      <Route exact path={AppRoute.ROOM}>
+        <Property/>
+      </Route>
+      <Route>
+        <NotFoundPage/>
+      </Route>
+    </Switch>
   );
 }
 

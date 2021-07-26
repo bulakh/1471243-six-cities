@@ -67,12 +67,12 @@ export const fetchFavorites = () => (dispatch, _getState, api) => (
 export const postGetFavorites = (hotelId, status) => (dispatch, _getState, api) => (
   api.post(`${APIRoute.FAVORITE}/${hotelId}/${status}`, null ,getHeaders(localStorage.getItem('token')))
     .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHING_PART)))
+    .catch(() => dispatch(redirectToRoute(AppRoute.SIGN_IN)))
     .then(() => api.get(`${APIRoute.HOTELS}/${hotelId}`, getHeaders(localStorage.getItem('token')))
       .then(({data}) => dispatch(updateOffer(offerAdaptToClient(data))))
       .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHING_PART)))
       .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
-      .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
-      .catch(() => {}),
+      .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE))),
     )
 );
 

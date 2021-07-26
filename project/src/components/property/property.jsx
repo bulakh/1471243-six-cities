@@ -1,6 +1,5 @@
 import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {useHistory} from 'react-router-dom';
 import Logo from '../logo/logo.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 import AccountNotLogged from '../account/account-not-logged.jsx';
@@ -9,7 +8,7 @@ import ReviewForm from '../reviews/review-form.jsx';
 import ReviewsList from '../reviews/reviews-list.jsx';
 import Map from '../map/map.jsx';
 import LoadingScreen from '../loading-screen/loading-screen.jsx';
-import {AuthorizationStatuses, FetchingStatus, AppRoute, FavoriteStatus} from '../../const.js';
+import {AuthorizationStatuses, FetchingStatus, FavoriteStatus} from '../../const.js';
 import {postGetFavorites} from '../../store/api-actions.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
 import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
@@ -21,7 +20,6 @@ function Property() {
   const fetchDataStatus = useSelector(getFetchDataStatus);
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const currentOffer = offer.offer;
   const comments = offer.comments;
@@ -31,12 +29,8 @@ function Property() {
   const [isActive, toggleActive] = useToggle(currentOffer.isFavorite);
 
   const toggleToFavorites = () => {
-    if (authorizationStatus !== AuthorizationStatuses.AUTH) {
-      history.push(AppRoute.SIGN_IN);
-    } else {
-      toggleActive();
-      dispatch(postGetFavorites(currentOffer.id, isActive ? FavoriteStatus.FALSE : FavoriteStatus.TRUE));
-    }
+    toggleActive();
+    dispatch(postGetFavorites(currentOffer.id, isActive ? FavoriteStatus.FALSE : FavoriteStatus.TRUE));
   };
 
 

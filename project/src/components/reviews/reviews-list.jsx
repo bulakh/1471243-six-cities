@@ -12,7 +12,7 @@ function ReviewsList() {
 
   return (
     <>
-      <ul className="reviews__list">
+      <ul className="reviews__list" data-testid="reviewList">
         {reviews.map((review) => <ReviewsItem review={review} key={review.id}/>)}
       </ul>
       {FetchingStatus.FETCHING_PART === fetchDataStatus &&

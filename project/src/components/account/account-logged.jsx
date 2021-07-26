@@ -26,7 +26,7 @@ function AccountLogged() {
           >
             <div className="header__avatar-wrapper user__avatar-wrapper">
             </div>
-            <span className="header__user-name user__name">{email}</span>
+            <span className="header__user-name user__name" data-testid="email">{email}</span>
           </Link>
         </li>
         <li className="header__nav-item">

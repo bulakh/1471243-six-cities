@@ -1,11 +1,10 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectPointId} from '../../store/action.js';
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import OffersProp from '../property/offers.prop.js';
 import {fetchDataForOffer, postGetFavorites} from '../../store/api-actions.js';
-import {AuthorizationStatuses, AppRoute, FavoriteStatus, FetchingStatus} from '../../const.js';
-import {getAuthorizationStatus} from '../../store/user/selectors.js';
+import {FavoriteStatus, FetchingStatus} from '../../const.js';
 import {getFetchDataStatus} from '../../store/data/selectors.js';
 import useToggle from '../../hooks/useToggle.js';
 
@@ -13,8 +12,6 @@ import useToggle from '../../hooks/useToggle.js';
 function Card({offer}) {
 
   const dispatch = useDispatch();
-  const history = useHistory();
-  const authorizationStatus = useSelector(getAuthorizationStatus);
   const fetchDataStatus = useSelector(getFetchDataStatus);
   const [isActive, toggleActive] = useToggle(offer.isFavorite);
 
@@ -27,12 +24,8 @@ function Card({offer}) {
   };
 
   const toggleToFavorites = () => {
-    if (authorizationStatus !== AuthorizationStatuses.AUTH) {
-      history.push(AppRoute.SIGN_IN);
-    } else {
-      toggleActive();
-      dispatch(postGetFavorites(offer.id, isActive ? FavoriteStatus.FALSE : FavoriteStatus.TRUE));
-    }
+    dispatch(postGetFavorites(offer.id, isActive ? FavoriteStatus.FALSE : FavoriteStatus.TRUE));
+    toggleActive();
   };
 
   return (
