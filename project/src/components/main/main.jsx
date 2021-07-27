@@ -33,7 +33,7 @@ function Main() {
 
   if (offersOfOneCity.length === 0) {
     return (
-      <MainEmpty cities={cities}/>
+      <MainEmpty city={city}/>
     );
   }
 

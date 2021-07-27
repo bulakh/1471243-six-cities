@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from '../logo/logo.jsx';
 import Location from '../location/location.jsx';
+import {cities} from '../../const.js';
 import AccountLogged from '../account/account-logged.jsx';
 
-function MainEmpty(props) {
-  const {cities} = props;
+function MainEmpty({city}) {
 
   return (
     <div className="page page--gray page--main">
@@ -32,7 +32,7 @@ function MainEmpty(props) {
             <section className="cities__no-places">
               <div className="cities__status-wrapper tabs__content">
                 <b className="cities__status">No places to stay available</b>
-                <p className="cities__status-description">We could not find any property available at the moment in Dusseldorf</p>
+                <p className="cities__status-description">We could not find any property available at the moment in {city}</p>
               </div>
             </section>
             <div className="cities__right-section"></div>
@@ -44,7 +44,7 @@ function MainEmpty(props) {
 }
 
 MainEmpty.propTypes = {
-  cities: PropTypes.arrayOf(PropTypes.string.isRequired),
+  city: PropTypes.string.isRequired,
 };
 
 export default MainEmpty;

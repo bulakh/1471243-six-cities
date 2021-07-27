@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import Card from './card.jsx';
 import OffersProp from '../property/offers.prop.js';
 
-function CardList(props) {
-  const {offers} = props;
+function CardList({offers}) {
 
   return (
     <>

@@ -1,8 +1,7 @@
 import React from 'react';
 import ReviewsProp from './reviews.prop.js';
 
-function ReviewsItem(props) {
-  const {review} = props;
+function ReviewsItem({review}) {
 
   return (
     <li className="reviews__item" key={review.id}>
