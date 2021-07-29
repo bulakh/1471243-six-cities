@@ -15,7 +15,7 @@ import {getAllOffers} from '../../store/data/selectors.js';
 import {getSort} from '../../store/navigation/selectors.js';
 import {getCity} from '../../store/navigation/selectors.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
-import useToggle from '../../hooks/useToggle.js';
+import useToggle from '../../hooks/use-toggle.js';
 
 function Main() {
 

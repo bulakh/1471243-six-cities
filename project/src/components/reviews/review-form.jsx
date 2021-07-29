@@ -3,13 +3,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {valueRatings, FetchingStatus} from '../../const.js';
 import {postGetComment} from '../../store/api-actions.js';
 import {getFetchDataStatus} from '../../store/data/selectors.js';
+import browserHistory from '../../browser-history.js';
 
 function ReviewForm() {
 
   const dispatch = useDispatch();
   const fetchDataStatus = useSelector(getFetchDataStatus);
 
-  const CURRENT_OFFER = window.location.pathname.replace(/\/offer[/]/, '');
+  const CURRENT_OFFER = browserHistory.location.pathname.replace(/\/offer[/]/, '');
   const MIN_LENGTH_TEXT = 50;
   const MAX_LENGTH_TEXT = 300;
 
@@ -77,7 +78,15 @@ function ReviewForm() {
           ))
         }
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" onChange={handleFieldChange} value={comment} maxLength={MAX_LENGTH_TEXT}/>
+      <textarea
+        className="reviews__textarea form__textarea"
+        id="review"
+        name="review"
+        placeholder="Tell how was your stay, what you like and what can be improved"
+        onChange={handleFieldChange}
+        value={comment}
+        maxLength={MAX_LENGTH_TEXT}
+      />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.

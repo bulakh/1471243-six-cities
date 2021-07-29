@@ -27,7 +27,7 @@ describe('Component: MainEmpty', () => {
       </Provider>,
     );
 
-    expect(screen.getByText('No places to stay available')).toBeInTheDocument();
+    expect(screen.getByText(/No places to stay available/i)).toBeInTheDocument();
     expect(screen.getByText(`We could not find any property available at the moment in ${city}`)).toBeInTheDocument();
     cities.map((oneCity) => expect(screen.getByText(oneCity)).toBeInTheDocument());
   });

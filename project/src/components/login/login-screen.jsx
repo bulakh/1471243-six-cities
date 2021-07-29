@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {login} from '../../store/api-actions.js';
 import {Link} from 'react-router-dom';
@@ -10,6 +10,7 @@ function LoginScreen() {
   const dispatch = useDispatch();
   const loginRef = useRef();
   const passwordRef = useRef();
+  let disabledBtn = false;
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -19,6 +20,16 @@ function LoginScreen() {
       password: passwordRef.current.value,
     }));
   };
+
+  const [passwordValue, setPasswordValue] = useState('');
+
+  const handlePasswordChange = () => {
+    setPasswordValue(passwordRef.current.value);
+  };
+
+  if (/\s/i.test(passwordValue) || passwordValue === '') {
+    disabledBtn = true;
+  }
 
   return (
     <div className="page page--gray page--login">
@@ -55,6 +66,7 @@ function LoginScreen() {
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
                 <input
+                  onChange={handlePasswordChange}
                   ref={passwordRef}
                   className="login__input form__input"
                   type="password"
@@ -67,6 +79,7 @@ function LoginScreen() {
               <button
                 className="login__submit form__submit button"
                 type="submit"
+                disabled={disabledBtn ? 'disabled' : ''}
               >
                 Sign in
               </button>

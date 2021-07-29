@@ -6,31 +6,63 @@ import configureStore from 'redux-mock-store';
 import {Provider} from 'react-redux';
 import userEvent from '@testing-library/user-event';
 import LoginScreen from './login-screen.jsx';
+import {fakeStore} from '../../fake.js';
+import * as Redux from 'react-redux';
 
-const mockStore = configureStore({});
+let history = null;
+let store = null;
 
 describe('Component: LoginScreen', () => {
 
+  beforeEach(() => {
+    history = createMemoryHistory();
+    const createFakeStore = configureStore({});
+    store = createFakeStore(fakeStore);
+  });
+
   it('should render "AuthScreen" when user navigate to "login" url', () => {
-    const history = createMemoryHistory();
     history.push('/login');
 
     render(
-      <Provider store={mockStore({})}>
+      <Provider store={store}>
         <Router history={history}>
           <LoginScreen />
         </Router>,
       </Provider>,
     );
 
-    expect(screen.getByText('E-mail')).toBeInTheDocument();
-    expect(screen.getByText('Password')).toBeInTheDocument();
-    expect(screen.getByText('Paris')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeDisabled();
+    expect(screen.getByText(/E-mail/i)).toBeInTheDocument();
+    expect(screen.getByText(/Password/i)).toBeInTheDocument();
+    expect(screen.getByText(/Paris/i)).toBeInTheDocument();
 
     userEvent.type(screen.getByTestId('login'), 'foma@mail.com');
     userEvent.type(screen.getByTestId('password'), '123456');
 
-    expect(screen.getByDisplayValue('foma@mail.com')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('123456')).toBeInTheDocument();
+    expect(screen.getByDisplayValue(/foma@mail.com/i)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(/123456/i)).toBeInTheDocument();
+    expect(screen.getByRole('button')).not.toBeDisabled();
+  });
+
+  it('should dispatch login and password on submit', () => {
+    const dispatch = jest.fn();
+    const useDispatch = jest.spyOn(Redux, 'useDispatch');
+    useDispatch.mockReturnValue(dispatch);
+
+    render(
+      <Provider store={store}>
+        <Router history={history}>
+          <LoginScreen />
+        </Router>,
+      </Provider>,
+    );
+
+    expect(dispatch).not.toHaveBeenCalled();
+
+    userEvent.type(screen.getByTestId('login'), 'foma@mail.com');
+    userEvent.type(screen.getByTestId('password'), '123456');
+    userEvent.click(screen.getByRole('button'));
+
+    expect(dispatch).toHaveBeenCalledTimes(1);
   });
 });
