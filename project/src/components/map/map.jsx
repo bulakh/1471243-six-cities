@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import useMap from '../../hooks/useMap.jsx';
+import useMap from '../../hooks/use-map.jsx';
 import OffersProp from '../property/offers.prop.js';
 import {getSelectedPointId} from '../../store/navigation/selectors.js';
 
@@ -63,6 +63,7 @@ function Map({city, points, changedPin}) {
       id="map"
       style={{height: '100%'}}
       ref={mapRef}
+      data-testid="map"
     >
     </div>
   );

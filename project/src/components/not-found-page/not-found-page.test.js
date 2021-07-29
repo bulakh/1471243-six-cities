@@ -13,8 +13,8 @@ describe('Component: NotFoundScreen', () => {
       </Router>,
     );
 
-    const headerElement = getByText('404. Page not found!');
-    const linkElement = getByText('Back to Main page');
+    const headerElement = getByText(/404. Page not found!/i);
+    const linkElement = getByText(/Back to Main page/i);
 
     expect(headerElement).toBeInTheDocument();
     expect(linkElement).toBeInTheDocument();

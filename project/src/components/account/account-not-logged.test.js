@@ -13,7 +13,7 @@ describe('Component: AccountNotLogged', () => {
       </Router>,
     );
 
-    const linkElement = getByText('Sign in');
+    const linkElement = getByText(/Sign in/i);
 
     expect(linkElement).toBeInTheDocument();
   });

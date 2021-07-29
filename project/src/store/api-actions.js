@@ -24,7 +24,7 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
 
 export const fetchDataForOffer = (hotelId) => (dispatch, _getState, api) => (
   Promise.all([
-    api.get(`${APIRoute.HOTELS}/${hotelId}`),
+    api.get(`${APIRoute.HOTELS}/${hotelId}`, getHeaders(localStorage.getItem('token'))),
     api.get(`${APIRoute.COMMENTS}/${hotelId}`),
     api.get(`${APIRoute.HOTELS}/${hotelId}${APIRoute.NEARBY}`),
     dispatch(fetchDataStatus(FetchingStatus.FETCHING)),

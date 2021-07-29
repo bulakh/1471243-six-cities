@@ -6,18 +6,157 @@ import {
   login,
   logout,
   fetchOffersList,
-  fetchFavorites
+  fetchFavorites,
+  postGetComment,
+  postGetFavorites,
+  fetchDataForOffer
 } from './api-actions.js';
 import {APIRoute, AppRoute, AuthorizationStatuses, FetchingStatus} from '../const.js';
-import {adaptedOffers} from '../utils.js';
-import {fakeOffer} from '../fake.js';
+import {fakeOffer, adaptedFakeOffer, fakeComment, adaptedFakeComment} from '../fake.js';
 
 let api = null;
+let fakeID = null;
 
 describe('Async operations', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     api = createAPI(() => {});
+    fakeID = 1;
   });
+
+  it('should make a correct API call to GET pack for offer - offer, comments, near offers', () => {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const dataForOfferLoader = fetchDataForOffer(fakeID);
+
+    apiMock
+      .onGet(`${APIRoute.HOTELS}/${fakeID}`)
+      .reply(200, fakeOffer);
+
+    apiMock
+      .onGet(`${APIRoute.COMMENTS}/${fakeID}`)
+      .reply(200, [fakeComment]);
+
+    apiMock
+      .onGet(`${APIRoute.HOTELS}/${fakeID}${APIRoute.NEARBY}`)
+      .reply(200, [fakeOffer]);
+
+    return dataForOfferLoader(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(4);
+
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.FETCHING,
+        });
+
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.LOAD_OFFER,
+          payload: [adaptedFakeOffer, [adaptedFakeComment], [adaptedFakeOffer]],
+        });
+
+        expect(dispatch).toHaveBeenNthCalledWith(3, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.FETCHED,
+        });
+
+        expect(dispatch).toHaveBeenNthCalledWith(4, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.IDLE,
+        });
+      });
+  });
+
+  it('should make a correct API call to Post one comment and Get all comments', () => {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+
+    const fakePostComment = {
+      comment: 'Beautiful space',
+      rating: '4.5',
+    };
+
+    const postGetCommentLoader = postGetComment(fakeID, fakePostComment);
+
+    apiMock
+      .onPost(`${APIRoute.COMMENTS}/${fakeID}`)
+      .reply(200, [fakeComment]);
+
+    apiMock
+      .onGet(`${APIRoute.COMMENTS}/${fakeID}`)
+      .reply(200, [fakeComment]);
+
+    return postGetCommentLoader(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(5);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.FETCHING_PART,
+        });
+      })
+      .then(() => {
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.LOAD_COMMENTS,
+          payload: [adaptedFakeComment],
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(3, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.FETCHING_PART,
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(4, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.FETCHED,
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(5, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.IDLE,
+        });
+      });
+  });
+
+  it('should make a correct API call to Update offer', () => {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const STATUS = 1;
+
+    const postGetFavoritesLoader = postGetFavorites(fakeID, STATUS);
+
+
+    apiMock
+      .onPost(`${APIRoute.FAVORITE}/${fakeID}/${STATUS}`)
+      .reply(200, fakeOffer);
+
+    apiMock
+      .onGet(`${APIRoute.HOTELS}/${fakeID}`)
+      .reply(200, fakeOffer);
+
+    return postGetFavoritesLoader(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(5);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.FETCHING_PART,
+        });
+      })
+      .then(() => {
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.UPDATE_OFFER,
+          payload: adaptedFakeOffer,
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(3, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.FETCHING_PART,
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(4, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.FETCHED,
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(5, {
+          type: ActionType.FETCH_DATA_STATUS,
+          payload: FetchingStatus.IDLE,
+        });
+      });
+  });
+
 
   it('should make a correct API call to GET /login', () => {
     const apiMock = new MockAdapter(api);
@@ -88,7 +227,7 @@ describe('Async operations', () => {
 
         expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.LOAD_OFFERS,
-          payload: adaptedOffers([fakeOffer]),
+          payload: [adaptedFakeOffer],
         });
 
         expect(dispatch).toHaveBeenNthCalledWith(3, {
@@ -123,7 +262,7 @@ describe('Async operations', () => {
 
         expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.LOAD_FAVORITES,
-          payload: adaptedOffers([fakeOffer]),
+          payload: [adaptedFakeOffer],
         });
 
         expect(dispatch).toHaveBeenNthCalledWith(3, {
@@ -153,5 +292,4 @@ describe('Async operations', () => {
         expect(dispatch).toHaveBeenCalledWith({type: ActionType.LOGOUT});
       });
   });
-
 });

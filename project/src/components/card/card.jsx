@@ -6,7 +6,7 @@ import OffersProp from '../property/offers.prop.js';
 import {fetchDataForOffer, postGetFavorites} from '../../store/api-actions.js';
 import {FavoriteStatus, FetchingStatus} from '../../const.js';
 import {getFetchDataStatus} from '../../store/data/selectors.js';
-import useToggle from '../../hooks/useToggle.js';
+import useToggle from '../../hooks/use-toggle.js';
 
 
 function Card({offer}) {

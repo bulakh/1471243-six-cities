@@ -12,7 +12,7 @@ import {AuthorizationStatuses, AppRoute} from './const.js';
 import {redirect} from './store/middlewares/redirect.js';
 import browserHistory from './browser-history';
 
-const CURRENT_OFFER = window.location.pathname.replace(/\/offer[/]/, '');
+const CURRENT_OFFER = browserHistory.location.pathname.replace(/\/offer[/]/, '');
 
 const api = createAPI(
   () => store.dispatch(requireAuthorization(AuthorizationStatuses.NO_AUTH)),

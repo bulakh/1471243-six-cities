@@ -12,7 +12,7 @@ import {AuthorizationStatuses, FetchingStatus, FavoriteStatus} from '../../const
 import {postGetFavorites} from '../../store/api-actions.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
 import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
-import useToggle from '../../hooks/useToggle.js';
+import useToggle from '../../hooks/use-toggle.js';
 
 function Property() {
 

@@ -27,7 +27,7 @@ describe('Component: FavoritesEmpty', () => {
     );
 
     expect(screen.getByText('Favorites (empty)')).toBeInTheDocument();
-    expect(screen.getByText('Nothing yet saved.')).toBeInTheDocument();
-    expect(screen.getByText('Save properties to narrow down search or plan your future trips.')).toBeInTheDocument();
+    expect(screen.getByText(/Nothing yet saved./i)).toBeInTheDocument();
+    expect(screen.getByText(/Save properties to narrow down search or plan your future trips./i)).toBeInTheDocument();
   });
 });

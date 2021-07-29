@@ -13,7 +13,7 @@ describe('Component: LoadingScreen', () => {
       </Router>,
     );
 
-    const textElement = getByText('Loading...');
+    const textElement = getByText(/Loading.../i);
 
     expect(textElement).toBeInTheDocument();
   });
