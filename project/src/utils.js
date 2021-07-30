@@ -45,6 +45,6 @@ export const getHeaders = (token) => {
 export const getSortedComments = (comments) => {
   comments.map ((comment) => comment.date = new Date(comment.date));
   comments.sort(((a, b) => b.date - a.date));
-  comments.map ((comment) => comment.date = String(comment.date));
+  comments.map ((comment) => comment.date = comment.date.toUTCString());
   return comments.slice(0, 10);
 };
