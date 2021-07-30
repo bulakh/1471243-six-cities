@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import OffersProp from '../property/offers.prop.js';
-import {postGetFavorites, fetchFavorites} from '../../store/api-actions.js';
+import {postGetFavorites, fetchFavorites, fetchDataForOffer} from '../../store/api-actions.js';
 import {getFetchDataStatus} from '../../store/data/selectors.js';
 import {FavoriteStatus, FetchingStatus} from '../../const.js';
 
@@ -15,10 +15,18 @@ function FavoritesCard({offer}) {
       .then(() => dispatch(fetchFavorites()));
   };
 
+  const listCardClickHandler = (evt) => {
+    dispatch(fetchDataForOffer(evt.currentTarget.id));
+  };
+
   return (
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${offer.id}`}>
+        <Link
+          to={`/offer/${offer.id}`}
+          id={offer.id}
+          onClick={listCardClickHandler}
+        >
           <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place"/>
         </Link>
       </div>

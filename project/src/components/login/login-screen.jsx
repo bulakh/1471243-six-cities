@@ -1,13 +1,16 @@
 import React, {useRef, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../../store/api-actions.js';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const.js';
 import Logo from '../logo/logo.jsx';
 import AccountNotLogged from '../account/account-not-logged.jsx';
+import {getError} from '../../store/user/selectors.js';
+import ToastError from '../toast-error/toast-error.jsx';
 
 function LoginScreen() {
   const dispatch = useDispatch();
+  const error = useSelector(getError);
   const loginRef = useRef();
   const passwordRef = useRef();
   let disabledBtn = false;
@@ -33,6 +36,7 @@ function LoginScreen() {
 
   return (
     <div className="page page--gray page--login">
+      {error !== '' && <ToastError/>}
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

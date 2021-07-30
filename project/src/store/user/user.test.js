@@ -6,6 +6,8 @@ describe('Reducer: user', () => {
   const state = {
     authorizationStatus: AuthorizationStatuses.UNKNOWN,
     email: '',
+    avatar: '',
+    error: '',
   };
 
   it('without additional parameters should return initial state', () => {
@@ -13,6 +15,8 @@ describe('Reducer: user', () => {
       .toEqual({
         authorizationStatus: AuthorizationStatuses.UNKNOWN,
         email: '',
+        avatar: '',
+        error: '',
       });
   });
 
@@ -26,6 +30,8 @@ describe('Reducer: user', () => {
       .toEqual({
         authorizationStatus: AuthorizationStatuses.AUTH,
         email: '',
+        avatar: '',
+        error: '',
       });
   });
 
@@ -38,6 +44,8 @@ describe('Reducer: user', () => {
       .toEqual({
         authorizationStatus: AuthorizationStatuses.NO_AUTH,
         email: '',
+        avatar: '',
+        error: '',
       });
   });
 
@@ -51,6 +59,23 @@ describe('Reducer: user', () => {
       .toEqual({
         authorizationStatus: AuthorizationStatuses.UNKNOWN,
         email: 'foma@mail.com',
+        avatar: '',
+        error: '',
+      });
+  });
+
+  it('should get avatar user in store', () => {
+    const takeAvatarAction = {
+      type: ActionType.TAKE_AVATAR,
+      payload: 'https://7.react.pages.academy/static/avatar/2.jpg',
+    };
+
+    expect(user(state, takeAvatarAction))
+      .toEqual({
+        authorizationStatus: AuthorizationStatuses.UNKNOWN,
+        email: '',
+        avatar: 'https://7.react.pages.academy/static/avatar/2.jpg',
+        error: '',
       });
   });
 

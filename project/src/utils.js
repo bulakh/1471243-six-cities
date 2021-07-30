@@ -41,3 +41,10 @@ export const getHeaders = (token) => {
 
   return headers;
 };
+
+export const getSortedComments = (comments) => {
+  comments.map ((comment) => comment.date = new Date(comment.date));
+  comments.sort(((a, b) => b.date - a.date));
+  comments.map ((comment) => comment.date = String(comment.date));
+  return comments.slice(0, 10);
+};

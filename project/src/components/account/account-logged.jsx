@@ -3,12 +3,13 @@ import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const.js';
 import {useSelector, useDispatch} from 'react-redux';
 import {logout} from '../../store/api-actions';
-import {getEmail} from '../../store/user/selectors.js';
+import {getEmail, getAvatar} from '../../store/user/selectors.js';
 import {fetchFavorites, fetchOffersList} from '../../store/api-actions.js';
 
 function AccountLogged() {
 
   const email = useSelector(getEmail);
+  const avatar = useSelector(getAvatar);
   const dispatch = useDispatch();
 
   const closeSession = () => {
@@ -25,6 +26,7 @@ function AccountLogged() {
             onClick={() => dispatch(fetchFavorites())}
           >
             <div className="header__avatar-wrapper user__avatar-wrapper">
+              <img style={{borderRadius: '50%'}} src={avatar} alt="This is me"/>
             </div>
             <span className="header__user-name user__name" data-testid="email">{email}</span>
           </Link>

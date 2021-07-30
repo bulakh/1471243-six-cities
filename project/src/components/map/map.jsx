@@ -20,8 +20,8 @@ const currentIcon = L.icon({
 });
 
 
-function Map({city, points, changedPin}) {
-
+function Map({currentOffer, points, changedPin}) {
+  const city = currentOffer.city;
   const selectedPointId = useSelector(getSelectedPointId);
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
@@ -42,6 +42,15 @@ function Map({city, points, changedPin}) {
         layerGroup.addLayer(marker);
       });
 
+      const markerCurrent = L.marker({
+        lat: currentOffer.location.latitude,
+        lng: currentOffer.location.longitude,
+      }, {
+        icon: currentIcon,
+      }).bindPopup(currentOffer.title);
+
+      !changedPin && layerGroup.addLayer(markerCurrent);
+
       layerGroup.addTo(map);
 
       map.flyTo(
@@ -56,7 +65,7 @@ function Map({city, points, changedPin}) {
       }
     };
 
-  }, [map, points, selectedPointId, changedPin]);
+  }, [map, currentOffer, points, selectedPointId, changedPin]);
 
   return (
     <div
@@ -70,14 +79,7 @@ function Map({city, points, changedPin}) {
 }
 
 Map.propTypes = {
-  city: PropTypes.shape({
-    location: PropTypes.shape({
-      latitude: PropTypes.number.isRequired,
-      longitude: PropTypes.number.isRequired,
-      zoom: PropTypes.number.isRequired,
-    }),
-    name: PropTypes.string.isRequired,
-  }).isRequired,
+  currentOffer: OffersProp,
   points: PropTypes.arrayOf(OffersProp),
   changedPin: PropTypes.bool.isRequired,
 };

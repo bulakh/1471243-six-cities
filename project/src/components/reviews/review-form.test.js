@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
 import {Router} from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
@@ -61,7 +61,7 @@ describe('Component: ReviewForm', () => {
 
   });
 
-  it('should post comment click on button on submit', () => {
+  it('should post comment click on button on submit', async () => {
     const dispatch = jest.fn();
     const useDispatch = jest.spyOn(Redux, 'useDispatch');
     useDispatch.mockReturnValue(dispatch);
@@ -75,12 +75,10 @@ describe('Component: ReviewForm', () => {
       </Provider>,
     );
 
-    expect(dispatch).not.toHaveBeenCalled();
-
-    userEvent.type(screen.getByRole('textbox'), fakeComment);
-    userEvent.click(screen.getByRole('radio', {name: fakeRatingName}));
-
-    userEvent.click(screen.getByRole('button'));
-    expect(dispatch).toHaveBeenCalledTimes(1);
+    await waitFor(() => userEvent.type(screen.getByRole('textbox'), fakeComment));
+    await waitFor(() => userEvent.click(screen.getByRole('radio', {name: fakeRatingName})));
+    await waitFor(() => userEvent.click(screen.getByRole('button')));
+    await waitFor(() => expect(screen.getByRole('button')).toBeDisabled());
+    await waitFor(() => expect(useDispatch).toHaveBeenCalledTimes(3));
   });
 });

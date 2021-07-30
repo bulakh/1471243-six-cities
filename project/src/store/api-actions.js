@@ -7,10 +7,12 @@ import {fetchDataStatus,
   logout as closeSession,
   requireAuthorization,
   takeEmail,
-  redirectToRoute} from './action';
+  pushError,
+  redirectToRoute,
+  takeAvatar} from './action';
 import {AuthorizationStatuses, AppRoute, APIRoute, FetchingStatus} from '../const.js';
 import {offerAdaptToClient} from './adapter.js';
-import {adaptedOffers, adaptedComments, getHeaders} from '../utils.js';
+import {adaptedOffers, adaptedComments, getHeaders, getSortedComments} from '../utils.js';
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(APIRoute.HOTELS)
@@ -20,6 +22,7 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
     })
     .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
     .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
+    .catch(() => dispatch(pushError('Server give up! Pls later')))
 );
 
 export const fetchDataForOffer = (hotelId) => (dispatch, _getState, api) => (
@@ -31,12 +34,13 @@ export const fetchDataForOffer = (hotelId) => (dispatch, _getState, api) => (
   ])
     .then(([offer, comments, nearby]) => {
       const adaptOffer = offerAdaptToClient(offer.data);
-      const adaptComments = adaptedComments(comments.data);
+      const adaptComments = getSortedComments(adaptedComments(comments.data));
       const adaptNearbyOffers = adaptedOffers(nearby.data);
       dispatch(loadOffer([adaptOffer, adaptComments, adaptNearbyOffers]));
     })
     .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
     .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
+    .catch(() => dispatch(pushError('Server give up! Pls later')))
 );
 
 export const postGetComment = (hotelId, {comment, rating}) => (dispatch, _getState, api) => (
@@ -44,12 +48,12 @@ export const postGetComment = (hotelId, {comment, rating}) => (dispatch, _getSta
     {comment, rating},
     getHeaders(localStorage.getItem('token')))
     .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHING_PART)))
+    .catch(() => dispatch(pushError('Your comment will remain with you')))
     .then(() => api.get(`${APIRoute.COMMENTS}/${hotelId}`, getHeaders(localStorage.getItem('token')))
-      .then(({data}) => dispatch(loadComments(adaptedComments(data))))
+      .then(({data}) => dispatch(loadComments(getSortedComments(adaptedComments(data)))))
       .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHING_PART)))
       .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
-      .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
-      .catch(() => {}),
+      .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE))),
     )
 );
 
@@ -62,17 +66,22 @@ export const fetchFavorites = () => (dispatch, _getState, api) => (
     })
     .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
     .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
+    .catch(() => dispatch(pushError('Server give up! Pls later')))
 );
 
 export const postGetFavorites = (hotelId, status) => (dispatch, _getState, api) => (
   api.post(`${APIRoute.FAVORITE}/${hotelId}/${status}`, null ,getHeaders(localStorage.getItem('token')))
     .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHING_PART)))
-    .catch(() => dispatch(redirectToRoute(AppRoute.SIGN_IN)))
+    .catch(() => {
+      dispatch(redirectToRoute(AppRoute.SIGN_IN));
+      dispatch(pushError('You are not athorizated. Sign in pls!'));
+    })
     .then(() => api.get(`${APIRoute.HOTELS}/${hotelId}`, getHeaders(localStorage.getItem('token')))
       .then(({data}) => dispatch(updateOffer(offerAdaptToClient(data))))
       .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHING_PART)))
       .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
-      .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE))),
+      .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
+      .catch(() => dispatch(pushError('Server give up! Pls later'))),
     )
 );
 
@@ -80,18 +89,21 @@ export const postGetFavorites = (hotelId, status) => (dispatch, _getState, api) 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoute.LOGIN)
     .then(() => dispatch(requireAuthorization(AuthorizationStatuses.AUTH)))
-    .catch(() => {})
+    .catch(() => dispatch(pushError('You are not athorizated. Sign in pls!')))
 );
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
   api.post(APIRoute.LOGIN, {email, password})
     .then(({data}) => {
       localStorage.setItem('token', data.token);
+      localStorage.setItem('email', data.email);
+      localStorage.setItem('avatar', data.avatar_url);
       dispatch(takeEmail(data.email));
+      dispatch(takeAvatar(data.avatar_url));
     })
     .then(() => dispatch(requireAuthorization(AuthorizationStatuses.AUTH)))
     .then(() => dispatch(redirectToRoute(AppRoute.MAIN)))
-    .then(() => localStorage.setItem('email', email))
+    .catch(() => dispatch(pushError('You are not athorizated. Sign in pls!')))
 );
 
 export const logout = () => (dispatch, _getState, api) => (
@@ -99,4 +111,5 @@ export const logout = () => (dispatch, _getState, api) => (
     .then(() => localStorage.removeItem('token'))
     .then(() => localStorage.removeItem('email'))
     .then(() => dispatch(closeSession()))
+    .catch(() => dispatch(pushError('Something wrong! Pls later!')))
 );

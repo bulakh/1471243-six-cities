@@ -96,6 +96,19 @@ export const adaptedFakeComment = {
   },
 };
 
+export const SortedAdaptedFakeComments = [{
+  'comment': 'Sun shine very good! I am so happy, gut in tac',
+  'date': 'Wed May 08 2019 17:13:56 GMT+0300 (GMT+03:00)',
+  'id': 1,
+  'rating': 4,
+  'user': {
+    'avatarUrl': 'img/1.png',
+    'id': 4,
+    'isPro': false,
+    'name': 'Max',
+  },
+}];
+
 export const fakeUser = {
   'avatar_url': 'img/1.png',
   'email': 'Oliver.conner@gmail.com',
@@ -125,5 +138,7 @@ export const fakeStore = {
   USER: {
     authorizationStatus: AuthorizationStatuses.AUTH,
     email: 'foma@mail.com',
+    avatar: 'https://7.react.pages.academy/static/avatar/2.jpg',
+    error: 'Server give up! Pls later',
   },
 };
