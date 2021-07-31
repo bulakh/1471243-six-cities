@@ -7,11 +7,14 @@ import LogoFooter from '../logo/logo-footer.jsx';
 import FavoritesCard from './favorites-card.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 import {getFavorites} from '../../store/data/selectors.js';
+import {getError} from '../../store/user/selectors.js';
 import FavoritesEmpty from './favorites-empty.jsx';
+import ToastError from '../toast-error/toast-error.jsx';
 
 
 function Favorites() {
   const favoriteOffers = useSelector(getFavorites);
+  const error = useSelector(getError);
 
   const uniqCities = getUniqCities(favoriteOffers);
 
@@ -23,6 +26,7 @@ function Favorites() {
 
   return (
     <div className="page">
+      {error !== '' && <ToastError/>}
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

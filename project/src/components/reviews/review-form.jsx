@@ -13,8 +13,10 @@ function ReviewForm() {
   const CURRENT_OFFER = browserHistory.location.pathname.replace(/\/offer[/]/, '');
   const MIN_LENGTH_TEXT = 50;
   const MAX_LENGTH_TEXT = 300;
+  let blockedBtn = false;
 
   const formRef = useRef();
+  const buttonRef = useRef();
   const [comment, setComment] = useState('');
   const [rate, setRate] = useState('');
 
@@ -28,11 +30,16 @@ function ReviewForm() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    setComment('');
-    setRate('');
-    dispatch(postGetComment(CURRENT_OFFER, getReview(comment, rate)));
-    formRef.current.reset();
+    buttonRef.current.setAttribute('disabled', 'disabled');
+    dispatch(postGetComment(CURRENT_OFFER, getReview(comment, rate)))
+      .then(() => {
+        formRef.current.reset();
+        setComment('');
+        setRate('');
+      })
+      .catch(() => buttonRef.current.removeAttribute('disabled'));
   };
+
 
   const handleFieldChange = (evt) => {
     setComment(evt.target.value);
@@ -41,8 +48,6 @@ function ReviewForm() {
   const handleRatingChange = (evt) => {
     setRate(evt.target.value);
   };
-
-  let blockedBtn = false;
 
   if (comment === '' || comment.split('').length < MIN_LENGTH_TEXT || rate === '' || fetchDataStatus !== FetchingStatus.IDLE) {
     blockedBtn = true;
@@ -92,6 +97,7 @@ function ReviewForm() {
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
         <button
+          ref={buttonRef}
           className="reviews__submit form__submit button"
           type="submit"
           disabled={blockedBtn ? 'disabled' : ''}

@@ -12,16 +12,17 @@ import Map from '../map/map.jsx';
 import {sorting} from '../sort/sort.js';
 import {AuthorizationStatuses, cities} from '../../const.js';
 import {getAllOffers} from '../../store/data/selectors.js';
-import {getSort} from '../../store/navigation/selectors.js';
-import {getCity} from '../../store/navigation/selectors.js';
-import {getAuthorizationStatus} from '../../store/user/selectors.js';
+import {getSort, getCity} from '../../store/navigation/selectors.js';
+import {getAuthorizationStatus, getError} from '../../store/user/selectors.js';
 import useToggle from '../../hooks/use-toggle.js';
+import ToastError from '../toast-error/toast-error.jsx';
 
 function Main() {
 
   const allOffers = useSelector(getAllOffers);
   const city = useSelector(getCity);
   const sort = useSelector(getSort);
+  const error = useSelector(getError);
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const [showSort, toggleShowSort] = useToggle(false);
 
@@ -39,6 +40,7 @@ function Main() {
 
   return (
     <div className="page page--gray page--main">
+      {error !== '' && <ToastError/>}
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
@@ -83,7 +85,7 @@ function Main() {
             <div className="cities__right-section">
               <section className="cities__map map">
                 <Map
-                  city={offersOfOneCity[0].city}
+                  currentOffer={offersOfOneCity[0]}
                   points={offersOfOneCity}
                   changedPin={changedPin}
                 />

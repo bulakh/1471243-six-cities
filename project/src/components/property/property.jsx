@@ -10,15 +10,17 @@ import Map from '../map/map.jsx';
 import LoadingScreen from '../loading-screen/loading-screen.jsx';
 import {AuthorizationStatuses, FetchingStatus, FavoriteStatus} from '../../const.js';
 import {postGetFavorites} from '../../store/api-actions.js';
-import {getAuthorizationStatus} from '../../store/user/selectors.js';
+import {getAuthorizationStatus, getError} from '../../store/user/selectors.js';
 import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
 import useToggle from '../../hooks/use-toggle.js';
+import ToastError from '../toast-error/toast-error.jsx';
 
 function Property() {
 
   const offer = useSelector(getOffer);
   const fetchDataStatus = useSelector(getFetchDataStatus);
   const authorizationStatus = useSelector(getAuthorizationStatus);
+  const error = useSelector(getError);
   const dispatch = useDispatch();
 
   const currentOffer = offer.offer;
@@ -42,6 +44,7 @@ function Property() {
 
   return (
     <div className="page">
+      {error !== '' && <ToastError/>}
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
@@ -57,7 +60,7 @@ function Property() {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {currentOffer.images.map((image) => (
+              {currentOffer.images.slice(0,6).map((image) => (
                 <div className="property__image-wrapper" key={image}>
                   <img className="property__image" src={image} alt={currentOffer.type}/>
                 </div>))}
@@ -149,7 +152,7 @@ function Property() {
           </div>
           <section className="property__map map">
             <Map
-              city={currentOffer.city}
+              currentOffer={currentOffer}
               points={nearOffers}
               changedPin={changedPin}
             />

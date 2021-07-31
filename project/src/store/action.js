@@ -9,6 +9,8 @@ export const ActionType = {
   LOGOUT: 'user/logout',
   REQUIRED_AUTHORIZATION: 'user/requiredAuthorization',
   TAKE_EMAIL: 'user/takeEmail',
+  TAKE_AVATAR: 'user/takeAvatar',
+  PUSH_ERROR: 'user/pushError',
 
   LOAD_OFFER: 'data/loadOffer',
   LOAD_OFFERS: 'data/loadOffers',
@@ -43,6 +45,14 @@ export const requireAuthorization = createAction(ActionType.REQUIRED_AUTHORIZATI
 
 export const takeEmail = createAction(ActionType.TAKE_EMAIL, (email) => ({
   payload: email,
+}));
+
+export const takeAvatar = createAction(ActionType.TAKE_AVATAR, (url) => ({
+  payload: url,
+}));
+
+export const pushError = createAction(ActionType.PUSH_ERROR, (message) => ({
+  payload: message,
 }));
 
 export const loadOffer = createAction(ActionType.LOAD_OFFER, (offer) => ({

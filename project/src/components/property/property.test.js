@@ -5,34 +5,30 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import {createMemoryHistory} from 'history';
 import {fakeStore} from '../../fake.js';
-import Map from './map.jsx';
+import Property from './property.jsx';
 
 let history = null;
 let store = null;
 
-describe('Component: Map', () => {
+describe('Component: Property', () => {
   it('should render correctly', () => {
     history = createMemoryHistory();
 
     const createFakeStore = configureStore({});
     store = createFakeStore(fakeStore);
+    const title = store.getState().DATA.offer.offer.title;
 
-    const currentOffer = store.getState().DATA.offer.offer;
-    const offers = store.getState().DATA.allOffers;
-    const changedPin = true;
 
     render(
       <Provider store={store}>
         <Router history={history}>
-          <Map
-            currentOffer={currentOffer}
-            points={offers}
-            changedPin={changedPin}
-          />
+          <Property/>
         </Router>,
       </Provider>,
     );
 
-    expect(screen.getByTestId(/map/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', {name: /Reviews/i})).toBeInTheDocument();
+    expect(screen.getByRole('heading', {name: /Other places in the neighbourhood/i})).toBeInTheDocument();
+    expect(screen.getByRole('link', {name: title})).toBeInTheDocument();
   });
 });

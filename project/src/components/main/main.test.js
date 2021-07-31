@@ -5,34 +5,31 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import {createMemoryHistory} from 'history';
 import {fakeStore} from '../../fake.js';
-import Map from './map.jsx';
+import {cities} from '../../const.js';
+import Main from './main.jsx';
 
 let history = null;
 let store = null;
 
-describe('Component: Map', () => {
+describe('Component: Main', () => {
   it('should render correctly', () => {
     history = createMemoryHistory();
 
     const createFakeStore = configureStore({});
     store = createFakeStore(fakeStore);
 
-    const currentOffer = store.getState().DATA.offer.offer;
-    const offers = store.getState().DATA.allOffers;
-    const changedPin = true;
 
     render(
       <Provider store={store}>
         <Router history={history}>
-          <Map
-            currentOffer={currentOffer}
-            points={offers}
-            changedPin={changedPin}
-          />
+          <Main/>
         </Router>,
       </Provider>,
     );
 
-    expect(screen.getByTestId(/map/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', {name: /Cities/i})).toBeInTheDocument();
+    expect(screen.getByRole('heading', {name: /Places/i})).toBeInTheDocument();
+    expect(screen.getByRole('heading', {name: /Beautiful & luxurious studio at great location/i})).toBeInTheDocument();
+    cities.map((oneCity) => expect(screen.getByRole('link', {name: oneCity})).toBeInTheDocument());
   });
 });

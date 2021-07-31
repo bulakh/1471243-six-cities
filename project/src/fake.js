@@ -35,19 +35,6 @@ export const fakeOffer = {
   'type': 'apartment',
 };
 
-export const fakeComment = {
-  'comment': 'Sun shine very good! I am so happy, gut in tac',
-  'date': '2019-05-08T14:13:56.569Z',
-  'id': 1,
-  'rating': 4,
-  'user': {
-    'avatar_url': 'img/1.png',
-    'id': 4,
-    'is_pro': false,
-    'name': 'Max',
-  },
-};
-
 export const adaptedFakeOffer = {
   'bedrooms': 3,
   'city': {
@@ -83,6 +70,19 @@ export const adaptedFakeOffer = {
   'type': 'apartment',
 };
 
+export const fakeComment = {
+  'comment': 'Sun shine very good! I am so happy, gut in tac',
+  'date': '2019-05-08T14:13:56.569Z',
+  'id': 1,
+  'rating': 4,
+  'user': {
+    'avatar_url': 'img/1.png',
+    'id': 4,
+    'is_pro': false,
+    'name': 'Max',
+  },
+};
+
 export const adaptedFakeComment = {
   'comment': 'Sun shine very good! I am so happy, gut in tac',
   'date': '2019-05-08T14:13:56.569Z',
@@ -95,6 +95,19 @@ export const adaptedFakeComment = {
     'name': 'Max',
   },
 };
+
+export const SortedAdaptedFakeComments = [{
+  'comment': 'Sun shine very good! I am so happy, gut in tac',
+  'date': 'Wed, 08 May 2019 14:13:56 GMT',
+  'id': 1,
+  'rating': 4,
+  'user': {
+    'avatarUrl': 'img/1.png',
+    'id': 4,
+    'isPro': false,
+    'name': 'Max',
+  },
+}];
 
 export const fakeUser = {
   'avatar_url': 'img/1.png',
@@ -125,5 +138,7 @@ export const fakeStore = {
   USER: {
     authorizationStatus: AuthorizationStatuses.AUTH,
     email: 'foma@mail.com',
+    avatar: 'https://7.react.pages.academy/static/avatar/2.jpg',
+    error: 'Server give up! Pls later',
   },
 };
