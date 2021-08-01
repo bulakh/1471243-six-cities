@@ -1,9 +1,9 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {requireAuthorization, logout, takeEmail, pushError, takeAvatar} from '../action.js';
-import {AuthorizationStatuses} from '../../const.js';
+import {AuthorizationStatus} from '../../const.js';
 
 const initialState = {
-  authorizationStatus: AuthorizationStatuses.UNKNOWN,
+  authorizationStatus: AuthorizationStatus.UNKNOWN,
   email: '',
   avatar: '',
   error: '',
@@ -15,7 +15,7 @@ const user = createReducer(initialState, (builder) => {
       state.authorizationStatus = action.payload;
     })
     .addCase(logout, (state) => {
-      state.authorizationStatus = AuthorizationStatuses.NO_AUTH;
+      state.authorizationStatus = AuthorizationStatus.NO_AUTH;
       state.email = initialState.email;
       state.avatar = initialState.avatar;
     })

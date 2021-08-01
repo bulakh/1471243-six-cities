@@ -41,7 +41,7 @@ export const SortType = {
   TOP_RATED: 'Top rated first',
 };
 
-export const AuthorizationStatuses = {
+export const AuthorizationStatus = {
   AUTH: 'AUTH',
   NO_AUTH: 'NO_AUTH',
   UNKNOWN: 'UNKNOWN',
@@ -67,4 +67,9 @@ export const FetchingStatus = {
 export const FavoriteStatus = {
   TRUE: '1',
   FALSE: '0',
+};
+
+export const ErrorStatus = {
+  UNAUTHORIZED: '401',
+  BAD_REQUEST: '400',
 };

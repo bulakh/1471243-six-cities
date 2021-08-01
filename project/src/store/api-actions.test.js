@@ -11,7 +11,7 @@ import {
   postGetFavorites,
   fetchDataForOffer
 } from './api-actions.js';
-import {APIRoute, AppRoute, AuthorizationStatuses, FetchingStatus} from '../const.js';
+import {APIRoute, AppRoute, AuthorizationStatus, FetchingStatus} from '../const.js';
 import {fakeOffer, adaptedFakeOffer, fakeComment, SortedAdaptedFakeComments} from '../fake.js';
 
 let api = null;
@@ -235,26 +235,7 @@ describe('Async operations', () => {
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.REQUIRED_AUTHORIZATION,
-          payload: AuthorizationStatuses.AUTH,
-        });
-      });
-  });
-
-  it('should make ERROR check Auth', () => {
-    const apiMock = new MockAdapter(api);
-    const dispatch = jest.fn();
-    const checkAuthLoader = checkAuth();
-
-    apiMock
-      .onGet(APIRoute.LOGIN)
-      .reply(400, undefined);
-
-    return checkAuthLoader(dispatch, () => {}, api)
-      .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(1);
-        expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.PUSH_ERROR,
-          payload: 'You are not athorizated. Sign in pls!',
+          payload: AuthorizationStatus.AUTH,
         });
       });
   });
@@ -295,7 +276,7 @@ describe('Async operations', () => {
 
         expect(dispatch).toHaveBeenNthCalledWith(3, {
           type: ActionType.REQUIRED_AUTHORIZATION,
-          payload: AuthorizationStatuses.AUTH,
+          payload: AuthorizationStatus.AUTH,
         });
 
         expect(dispatch).toHaveBeenNthCalledWith(4, {
@@ -325,7 +306,7 @@ describe('Async operations', () => {
 
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.PUSH_ERROR,
-          payload: 'You are not athorizated. Sign in pls!',
+          payload: 'ERROR! Enter correct data pls',
         });
       });
   });
@@ -429,18 +410,13 @@ describe('Async operations', () => {
 
     apiMock
       .onGet(APIRoute.FAVORITE)
-      .reply(200, undefined);
+      .reply(400, undefined);
 
     return favoriteLoader(dispatch, () => {}, api)
       .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect(dispatch).toHaveBeenCalledTimes(1);
 
         expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.FETCH_DATA_STATUS,
-          payload: FetchingStatus.FETCHING,
-        });
-
-        expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.PUSH_ERROR,
           payload: 'Server give up! Pls later',
         });

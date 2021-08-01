@@ -10,7 +10,7 @@ import AccountLogged from '../account/account-logged.jsx';
 import AccountNotLogged from '../account/account-not-logged.jsx';
 import Map from '../map/map.jsx';
 import {sorting} from '../sort/sort.js';
-import {AuthorizationStatuses, cities} from '../../const.js';
+import {AuthorizationStatus, cities} from '../../const.js';
 import {getAllOffers} from '../../store/data/selectors.js';
 import {getSort, getCity} from '../../store/navigation/selectors.js';
 import {getAuthorizationStatus, getError} from '../../store/user/selectors.js';
@@ -18,6 +18,7 @@ import useToggle from '../../hooks/use-toggle.js';
 import ToastError from '../toast-error/toast-error.jsx';
 
 function Main() {
+  const OFFERS_LENGTH = 0;
 
   const allOffers = useSelector(getAllOffers);
   const city = useSelector(getCity);
@@ -32,7 +33,7 @@ function Main() {
 
   const changedPin = true;
 
-  if (offersOfOneCity.length === 0) {
+  if (offersOfOneCity.length === OFFERS_LENGTH) {
     return (
       <MainEmpty city={city}/>
     );
@@ -45,7 +46,7 @@ function Main() {
         <div className="container">
           <div className="header__wrapper">
             <Logo/>
-            {authorizationStatus === AuthorizationStatuses.AUTH
+            {authorizationStatus === AuthorizationStatus.AUTH
               ? <AccountLogged/>
               : <AccountNotLogged/>}
           </div>

@@ -1,10 +1,10 @@
 import {user} from './user.js';
 import {ActionType} from '../action.js';
-import {AuthorizationStatuses} from '../../const.js';
+import {AuthorizationStatus} from '../../const.js';
 
 describe('Reducer: user', () => {
   const state = {
-    authorizationStatus: AuthorizationStatuses.UNKNOWN,
+    authorizationStatus: AuthorizationStatus.UNKNOWN,
     email: '',
     avatar: '',
     error: '',
@@ -13,7 +13,7 @@ describe('Reducer: user', () => {
   it('without additional parameters should return initial state', () => {
     expect(user(undefined, {}))
       .toEqual({
-        authorizationStatus: AuthorizationStatuses.UNKNOWN,
+        authorizationStatus: AuthorizationStatus.UNKNOWN,
         email: '',
         avatar: '',
         error: '',
@@ -23,12 +23,12 @@ describe('Reducer: user', () => {
   it('should check require authorization status', () => {
     const requireAuthorizationAction = {
       type: ActionType.REQUIRED_AUTHORIZATION,
-      payload: AuthorizationStatuses.AUTH,
+      payload: AuthorizationStatus.AUTH,
     };
 
     expect(user(state, requireAuthorizationAction))
       .toEqual({
-        authorizationStatus: AuthorizationStatuses.AUTH,
+        authorizationStatus: AuthorizationStatus.AUTH,
         email: '',
         avatar: '',
         error: '',
@@ -42,7 +42,7 @@ describe('Reducer: user', () => {
 
     expect(user(state, logoutAction))
       .toEqual({
-        authorizationStatus: AuthorizationStatuses.NO_AUTH,
+        authorizationStatus: AuthorizationStatus.NO_AUTH,
         email: '',
         avatar: '',
         error: '',
@@ -57,7 +57,7 @@ describe('Reducer: user', () => {
 
     expect(user(state, takeEmailAction))
       .toEqual({
-        authorizationStatus: AuthorizationStatuses.UNKNOWN,
+        authorizationStatus: AuthorizationStatus.UNKNOWN,
         email: 'foma@mail.com',
         avatar: '',
         error: '',
@@ -72,7 +72,7 @@ describe('Reducer: user', () => {
 
     expect(user(state, takeAvatarAction))
       .toEqual({
-        authorizationStatus: AuthorizationStatuses.UNKNOWN,
+        authorizationStatus: AuthorizationStatus.UNKNOWN,
         email: '',
         avatar: 'https://7.react.pages.academy/static/avatar/2.jpg',
         error: '',

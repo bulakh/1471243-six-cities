@@ -1,6 +1,6 @@
 import {getUniqCities, getFilteredOffers, isCheckedAuth, adaptedOffers, adaptedComments, getHeaders} from './utils.js';
 import {fakeOffer, fakeComment, adaptedFakeComment, adaptedFakeOffer} from './fake.js';
-import {AuthorizationStatuses} from './const.js';
+import {AuthorizationStatus} from './const.js';
 
 
 let authorizationStatus = null;
@@ -9,7 +9,7 @@ let fakeCity = null;
 describe('Functions: Utils', () => {
 
   beforeEach(() => {
-    authorizationStatus = AuthorizationStatuses.UNKNOWN;
+    authorizationStatus = AuthorizationStatus.UNKNOWN;
     fakeCity = 'Amsterdam';
   });
 

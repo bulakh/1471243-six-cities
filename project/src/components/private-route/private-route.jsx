@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Route, Redirect} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import {AppRoute, AuthorizationStatuses} from '../../const';
+import {AppRoute, AuthorizationStatus} from '../../const';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
 
 
@@ -14,7 +14,7 @@ function PrivateRoute({render, path, exact}) {
       path={path}
       exact={exact}
       render={(routeProps) => (
-        authorizationStatus === AuthorizationStatuses.AUTH
+        authorizationStatus === AuthorizationStatus.AUTH
           ? render(routeProps)
           : <Redirect to={AppRoute.SIGN_IN} />
       )}

@@ -1,4 +1,4 @@
-import {AuthorizationStatuses} from './const';
+import {AuthorizationStatus} from './const';
 import {offerAdaptToClient, commentAdaptToClient} from './store/adapter.js';
 
 export const getUniqCities = (offers) => {
@@ -12,7 +12,7 @@ export const getFilteredOffers = (offers, city) =>
   offers.filter((offer) => offer.city.name === city);
 
 export const isCheckedAuth = (authorizationStatus) =>
-  authorizationStatus === AuthorizationStatuses.UNKNOWN;
+  authorizationStatus === AuthorizationStatus.UNKNOWN;
 
 export const adaptedOffers = (offers) => {
   const adaptOffers = [];

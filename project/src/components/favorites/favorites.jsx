@@ -13,12 +13,14 @@ import ToastError from '../toast-error/toast-error.jsx';
 
 
 function Favorites() {
+  const FAVORITES_LENGTH = 0;
+
   const favoriteOffers = useSelector(getFavorites);
   const error = useSelector(getError);
 
   const uniqCities = getUniqCities(favoriteOffers);
 
-  if (favoriteOffers.length === 0) {
+  if (favoriteOffers.length === FAVORITES_LENGTH) {
     return (
       <FavoritesEmpty/>
     );
