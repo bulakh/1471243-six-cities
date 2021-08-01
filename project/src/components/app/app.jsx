@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {Switch, Route, Redirect} from 'react-router-dom';
-import {AppRoute, FetchingStatus, AuthorizationStatuses} from '../../const.js';
+import {AppRoute, FetchingStatus, AuthorizationStatus} from '../../const.js';
 import Main from '../main/main.jsx';
 import Login from '../login/login-screen.jsx';
 import Favorites from '../favorites/favorites.jsx';
@@ -31,7 +31,7 @@ function App() {
       <Route
         exact
         path={AppRoute.SIGN_IN}
-        render={() => authorizationStatus === AuthorizationStatuses.AUTH
+        render={() => authorizationStatus === AuthorizationStatus.AUTH
           ? <Redirect to={AppRoute.MAIN}/>
           : <Login/>}
       >

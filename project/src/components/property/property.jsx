@@ -8,7 +8,7 @@ import ReviewForm from '../reviews/review-form.jsx';
 import ReviewsList from '../reviews/reviews-list.jsx';
 import Map from '../map/map.jsx';
 import LoadingScreen from '../loading-screen/loading-screen.jsx';
-import {AuthorizationStatuses, FetchingStatus, FavoriteStatus} from '../../const.js';
+import {AuthorizationStatus, FetchingStatus, FavoriteStatus} from '../../const.js';
 import {postGetFavorites} from '../../store/api-actions.js';
 import {getAuthorizationStatus, getError} from '../../store/user/selectors.js';
 import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
@@ -49,7 +49,7 @@ function Property() {
         <div className="container">
           <div className="header__wrapper">
             <Logo/>
-            {authorizationStatus === AuthorizationStatuses.AUTH
+            {authorizationStatus === AuthorizationStatus.AUTH
               ? <AccountLogged/>
               : <AccountNotLogged/>}
           </div>
@@ -145,7 +145,7 @@ function Property() {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
                 <ReviewsList/>
-                {authorizationStatus === AuthorizationStatuses.AUTH
+                {authorizationStatus === AuthorizationStatus.AUTH
                   && <ReviewForm/>}
               </section>
             </div>

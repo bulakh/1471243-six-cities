@@ -1,4 +1,4 @@
-import {FetchingStatus, SortType, AuthorizationStatuses} from './const.js';
+import {FetchingStatus, SortType, AuthorizationStatus} from './const.js';
 
 export const fakeOffer = {
   'bedrooms': 3,
@@ -136,7 +136,7 @@ export const fakeStore = {
     sort: SortType.POPULAR,
   },
   USER: {
-    authorizationStatus: AuthorizationStatuses.AUTH,
+    authorizationStatus: AuthorizationStatus.AUTH,
     email: 'foma@mail.com',
     avatar: 'https://7.react.pages.academy/static/avatar/2.jpg',
     error: 'Server give up! Pls later',

@@ -4,7 +4,7 @@ import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import {AppRoute, AuthorizationStatuses, FetchingStatus} from '../../const.js';
+import {AppRoute, AuthorizationStatus, FetchingStatus} from '../../const.js';
 import {fakeStore} from '../../fake.js';
 import {NameSpace} from '../../store/root-reducer.js';
 import App from './app';
@@ -44,7 +44,7 @@ describe('Application Routing', () => {
     const createFakeStore = configureStore({});
     store = createFakeStore({
       [NameSpace.USER]: {
-        authorizationStatus: AuthorizationStatuses.NO_AUTH,
+        authorizationStatus: AuthorizationStatus.NO_AUTH,
       },
       [NameSpace.DATA]: {
         fetchDataStatus: FetchingStatus.IDLE,

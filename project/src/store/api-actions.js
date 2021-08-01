@@ -10,9 +10,11 @@ import {fetchDataStatus,
   pushError,
   redirectToRoute,
   takeAvatar} from './action';
-import {AuthorizationStatuses, AppRoute, APIRoute, FetchingStatus} from '../const.js';
+import {AuthorizationStatus, AppRoute, APIRoute, FetchingStatus} from '../const.js';
 import {offerAdaptToClient} from './adapter.js';
 import {adaptedOffers, adaptedComments, getHeaders, getSortedComments} from '../utils.js';
+
+const UNAUTHORIZED_STATUS = 401;
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(APIRoute.HOTELS)
@@ -66,7 +68,13 @@ export const fetchFavorites = () => (dispatch, _getState, api) => (
     })
     .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
     .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
-    .catch(() => dispatch(pushError('Server give up! Pls later')))
+    .catch((error) => {
+      if (error.response.status === UNAUTHORIZED_STATUS) {
+        dispatch(pushError('You are not athorizated. Sign in pls!'));
+      } else {
+        dispatch(pushError('Server give up! Pls later'));
+      }
+    })
 );
 
 export const postGetFavorites = (hotelId, status) => (dispatch, _getState, api) => (
@@ -88,8 +96,8 @@ export const postGetFavorites = (hotelId, status) => (dispatch, _getState, api) 
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoute.LOGIN)
-    .then(() => dispatch(requireAuthorization(AuthorizationStatuses.AUTH)))
-    .catch(() => dispatch(pushError('You are not athorizated. Sign in pls!')))
+    .then(() => dispatch(requireAuthorization(AuthorizationStatus.AUTH)))
+    .catch(() => {})
 );
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
@@ -101,9 +109,9 @@ export const login = ({login: email, password}) => (dispatch, _getState, api) =>
       dispatch(takeEmail(data.email));
       dispatch(takeAvatar(data.avatar_url));
     })
-    .then(() => dispatch(requireAuthorization(AuthorizationStatuses.AUTH)))
+    .then(() => dispatch(requireAuthorization(AuthorizationStatus.AUTH)))
     .then(() => dispatch(redirectToRoute(AppRoute.MAIN)))
-    .catch(() => dispatch(pushError('You are not athorizated. Sign in pls!')))
+    .catch(() => dispatch(pushError('ERROR! Enter correct data pls')))
 );
 
 export const logout = () => (dispatch, _getState, api) => (

@@ -4,7 +4,6 @@ import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history';
 import configureStore from 'redux-mock-store';
 import {Provider} from 'react-redux';
-// import userEvent from '@testing-library/user-event';
 import {fakeStore} from '../../fake.js';
 import * as Redux from 'react-redux';
 import ToastError from './toast-error.jsx';

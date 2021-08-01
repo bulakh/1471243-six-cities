@@ -8,14 +8,14 @@ import App from './components/app/app.jsx';
 import rootReducer from './store/root-reducer.js';
 import {requireAuthorization, takeEmail, takeAvatar} from './store/action.js';
 import {checkAuth, fetchOffersList, fetchDataForOffer, fetchFavorites} from './store/api-actions.js';
-import {AuthorizationStatuses, AppRoute} from './const.js';
+import {AuthorizationStatus, AppRoute} from './const.js';
 import {redirect} from './store/middlewares/redirect.js';
 import browserHistory from './browser-history';
 
 const CURRENT_OFFER = browserHistory.location.pathname.replace(/\/offer[/]/, '');
 
 const api = createAPI(
-  () => store.dispatch(requireAuthorization(AuthorizationStatuses.NO_AUTH)),
+  () => store.dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH)),
 );
 
 const store = configureStore({
@@ -28,14 +28,18 @@ const store = configureStore({
     }).concat(redirect),
 });
 
-
 store.dispatch(checkAuth());
-store.dispatch(fetchOffersList());
 store.dispatch(takeEmail(localStorage.email));
 store.dispatch(takeAvatar(localStorage.avatar));
 
 if (!isNaN(parseInt(CURRENT_OFFER, 10))) {
-  store.dispatch(fetchDataForOffer(CURRENT_OFFER));
+  store.dispatch(fetchDataForOffer(CURRENT_OFFER))
+    .then(() => {
+      store.dispatch(fetchOffersList());
+
+    });
+} else {
+  store.dispatch(fetchOffersList());
 }
 
 if (CURRENT_OFFER === AppRoute.FAVORITES) {
