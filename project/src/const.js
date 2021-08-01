@@ -68,8 +68,3 @@ export const FavoriteStatus = {
   TRUE: '1',
   FALSE: '0',
 };
-
-export const ErrorStatus = {
-  UNAUTHORIZED: '401',
-  BAD_REQUEST: '400',
-};

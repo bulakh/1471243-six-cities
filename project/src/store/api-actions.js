@@ -10,9 +10,11 @@ import {fetchDataStatus,
   pushError,
   redirectToRoute,
   takeAvatar} from './action';
-import {AuthorizationStatus, AppRoute, APIRoute, FetchingStatus, ErrorStatus} from '../const.js';
+import {AuthorizationStatus, AppRoute, APIRoute, FetchingStatus} from '../const.js';
 import {offerAdaptToClient} from './adapter.js';
 import {adaptedOffers, adaptedComments, getHeaders, getSortedComments} from '../utils.js';
+
+const UNAUTHORIZED_STATUS = 401;
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(APIRoute.HOTELS)
@@ -67,7 +69,7 @@ export const fetchFavorites = () => (dispatch, _getState, api) => (
     .then(() => dispatch(fetchDataStatus(FetchingStatus.FETCHED)))
     .then(() => dispatch(fetchDataStatus(FetchingStatus.IDLE)))
     .catch((error) => {
-      if (error.response.status === ErrorStatus.UNAUTHORIZED) {
+      if (error.response.status === UNAUTHORIZED_STATUS) {
         dispatch(pushError('You are not athorizated. Sign in pls!'));
       } else {
         dispatch(pushError('Server give up! Pls later'));
