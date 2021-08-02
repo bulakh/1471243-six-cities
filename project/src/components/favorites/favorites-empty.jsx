@@ -1,11 +1,17 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 import Logo from '../logo/logo.jsx';
 import LogoFooter from '../logo/logo-footer.jsx';
 import AccountLogged from '../account/account-logged.jsx';
+import {getError} from '../../store/user/selectors.js';
+import ToastError from '../toast-error/toast-error.jsx';
 
 function FavoritesEmpty() {
+  const error = useSelector(getError);
+
   return (
     <div className="page page--favorites-empty">
+      {error !== '' && <ToastError/>}
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

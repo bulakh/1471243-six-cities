@@ -12,7 +12,7 @@ function AccountLogged() {
   const avatar = useSelector(getAvatar);
   const dispatch = useDispatch();
 
-  const closeSession = () => {
+  const handleSessionClose = () => {
     dispatch(logout())
       .then(() => dispatch(fetchOffersList()));
   };
@@ -39,7 +39,7 @@ function AccountLogged() {
               backgroundColor: 'transparent',
               cursor: 'pointer',
             }}
-            onClick={closeSession}
+            onClick={handleSessionClose}
           >
             <span className="header__signout">Sign out</span>
           </button>

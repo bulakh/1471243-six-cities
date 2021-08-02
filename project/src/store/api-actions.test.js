@@ -73,19 +73,19 @@ describe('Async operations', () => {
 
     apiMock
       .onGet(`${APIRoute.HOTELS}/${fakeID}`)
-      .reply(200, undefined);
+      .reply(404, undefined);
 
     apiMock
       .onGet(`${APIRoute.COMMENTS}/${fakeID}`)
-      .reply(200, undefined);
+      .reply(404, undefined);
 
     apiMock
       .onGet(`${APIRoute.HOTELS}/${fakeID}${APIRoute.NEARBY}`)
-      .reply(200, undefined);
+      .reply(404, undefined);
 
     return dataForOfferLoader(dispatch, () => {}, api)
       .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect(dispatch).toHaveBeenCalledTimes(3);
 
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.FETCH_DATA_STATUS,
@@ -94,7 +94,12 @@ describe('Async operations', () => {
 
         expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.PUSH_ERROR,
-          payload: 'Server give up! Pls later',
+          payload: 'Error of load! Pls try later',
+        });
+
+        expect(dispatch).toHaveBeenNthCalledWith(3, {
+          type: ActionType.PUSH_ERROR,
+          payload: 'Hotel with this id is not exist!',
         });
       });
   });
@@ -215,7 +220,7 @@ describe('Async operations', () => {
         });
         expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.PUSH_ERROR,
-          payload: 'Server give up! Pls later',
+          payload: 'You can not add/remove in Favorites! Pls try later',
         });
       });
   });
@@ -298,7 +303,7 @@ describe('Async operations', () => {
 
     apiMock
       .onPost(APIRoute.LOGIN)
-      .reply(200, undefined);
+      .reply(404, undefined);
 
     return loginLoader(dispatch, () => {}, api)
       .then(() => {
@@ -306,7 +311,7 @@ describe('Async operations', () => {
 
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.PUSH_ERROR,
-          payload: 'ERROR! Enter correct data pls',
+          payload: 'Something wrong! Pls try later!',
         });
       });
   });
@@ -363,7 +368,7 @@ describe('Async operations', () => {
         });
         expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.PUSH_ERROR,
-          payload: 'Server give up! Pls later',
+          payload: 'Error of load! Pls try later',
         });
       });
   });
@@ -418,7 +423,7 @@ describe('Async operations', () => {
 
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.PUSH_ERROR,
-          payload: 'Server give up! Pls later',
+          payload: 'Error of load! Pls try later',
         });
       });
   });
@@ -453,7 +458,7 @@ describe('Async operations', () => {
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.PUSH_ERROR,
-          payload: 'Something wrong! Pls later!',
+          payload: 'Something wrong! Pls try later!',
         });
       });
   });

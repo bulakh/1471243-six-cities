@@ -1,4 +1,7 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
+import {getError} from '../../store/user/selectors.js';
+import ToastError from '../toast-error/toast-error.jsx';
 
 
 const loading = {
@@ -11,8 +14,15 @@ const loading = {
 };
 
 function LoadingScreen() {
+  const error = useSelector(getError);
+
   return (
-    <div style={loading}>Loading...</div>
+    <div>
+      {error !== '' && <ToastError/>}
+      <div style={loading}>
+        Loading...
+      </div>
+    </div>
   );
 }
 

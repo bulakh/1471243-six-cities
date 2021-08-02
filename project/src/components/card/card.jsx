@@ -15,22 +15,22 @@ function Card({offer}) {
   const fetchDataStatus = useSelector(getFetchDataStatus);
   const [isActive, toggleActive] = useToggle(offer.isFavorite);
 
-  const listCardHoverHandler = (evt) => {
+  const handleCardListHover = (evt) => {
     dispatch(selectPointId(evt.currentTarget.id));
   };
 
-  const listCardClickHandler = (evt) => {
+  const handleCardListClick = (evt) => {
     dispatch(fetchDataForOffer(evt.currentTarget.id));
   };
 
-  const toggleToFavorites = () => {
+  const handleFavoriteToggle = () => {
     dispatch(postGetFavorites(offer.id, isActive ? FavoriteStatus.FALSE : FavoriteStatus.TRUE));
     toggleActive();
   };
 
   return (
     <article className="cities__place-card place-card"
-      onMouseEnter={listCardHoverHandler}
+      onMouseEnter={handleCardListHover}
       id={offer.id}
     >
       {offer.isPremium &&
@@ -40,7 +40,7 @@ function Card({offer}) {
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link
           to={`/offer/${offer.id}`}
-          onClick={listCardClickHandler}
+          onClick={handleCardListClick}
           id={offer.id}
         >
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place"/>
@@ -58,7 +58,7 @@ function Card({offer}) {
                 ? 'place-card__bookmark-button place-card__bookmark-button--active button'
                 : 'place-card__bookmark-button button'}
               type="button"
-              onClick = {toggleToFavorites}
+              onClick = {handleFavoriteToggle}
             >
               <svg className="place-card__bookmark-icon" width="18" height="19">
                 <use xlinkHref="#icon-bookmark"></use>
@@ -75,13 +75,13 @@ function Card({offer}) {
         <h2 className="place-card__name">
           <Link
             to={`/offer/${offer.id}`}
-            onClick={listCardClickHandler}
+            onClick={handleCardListClick}
             id={offer.id}
           >
             {offer.title}
           </Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{offer.type.charAt(0).toUpperCase() + offer.type.slice(1)}</p>
       </div>
     </article>
   );

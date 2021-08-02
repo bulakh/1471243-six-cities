@@ -10,12 +10,12 @@ function FavoritesCard({offer}) {
   const dispatch = useDispatch();
   const fetchDataStatus = useSelector(getFetchDataStatus);
 
-  const removeFavorite = () => {
+  const handleFavoriteRemove = () => {
     dispatch(postGetFavorites(offer.id, FavoriteStatus.FALSE))
       .then(() => dispatch(fetchFavorites()));
   };
 
-  const listCardClickHandler = (evt) => {
+  const handleCardClick = (evt) => {
     dispatch(fetchDataForOffer(evt.currentTarget.id));
   };
 
@@ -25,7 +25,7 @@ function FavoritesCard({offer}) {
         <Link
           to={`/offer/${offer.id}`}
           id={offer.id}
-          onClick={listCardClickHandler}
+          onClick={handleCardClick}
         >
           <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place"/>
         </Link>
@@ -37,7 +37,7 @@ function FavoritesCard({offer}) {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           {FetchingStatus.IDLE === fetchDataStatus &&
-            <button onClick={removeFavorite} className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+            <button onClick={handleFavoriteRemove} className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
               <svg className="place-card__bookmark-icon" width="18" height="19">
                 <use xlinkHref="#icon-bookmark"></use>
               </svg>
@@ -53,7 +53,7 @@ function FavoritesCard({offer}) {
         <h2 className="place-card__name">
           <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{offer.type.charAt(0).toUpperCase() + offer.type.slice(1)}</p>
       </div>
     </article>
   );

@@ -16,9 +16,9 @@ function ReviewForm() {
   let blockedBtn = false;
 
   const formRef = useRef();
-  const buttonRef = useRef();
   const [comment, setComment] = useState('');
   const [rate, setRate] = useState('');
+  const [blockedControl, setBlockedControl] = useState(false);
 
   const getReview = (review, rating) => {
     const note = {
@@ -30,14 +30,15 @@ function ReviewForm() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    buttonRef.current.setAttribute('disabled', 'disabled');
+    setBlockedControl(true);
     dispatch(postGetComment(CURRENT_OFFER, getReview(comment, rate)))
       .then(() => {
         formRef.current.reset();
         setComment('');
         setRate('');
+        setBlockedControl(false);
       })
-      .catch(() => buttonRef.current.removeAttribute('disabled'));
+      .catch(() => setBlockedControl(false));
   };
 
 
@@ -73,6 +74,7 @@ function ReviewForm() {
                 value={rating.id}
                 id={`${rating.id}-stars`}
                 type="radio"
+                disabled={blockedControl ? 'disabled' : ''}
               />
               <label htmlFor={`${rating.id}-stars`} className="reviews__rating-label form__rating-label" title={rating.title}>
                 <svg className="form__star-image" width="37" height="33">
@@ -91,16 +93,16 @@ function ReviewForm() {
         onChange={handleFieldChange}
         value={comment}
         maxLength={MAX_LENGTH_TEXT}
+        disabled={blockedControl ? 'disabled' : ''}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
         <button
-          ref={buttonRef}
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={blockedBtn ? 'disabled' : ''}
+          disabled={blockedControl || blockedBtn ? 'disabled' : ''}
         >
           Submit
         </button>

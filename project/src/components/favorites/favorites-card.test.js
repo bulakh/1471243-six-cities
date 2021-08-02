@@ -34,7 +34,7 @@ describe('Component: FavoritesCard', () => {
 
     expect(screen.getByText(title)).toBeInTheDocument();
     expect(screen.getByText(`€${price}`)).toBeInTheDocument();
-    expect(screen.getByText(type)).toBeInTheDocument();
+    expect(screen.getByText(type.charAt(0).toUpperCase() + type.slice(1))).toBeInTheDocument();
   });
 
   it('should remove favorite offer from favorite list on click button', async () => {

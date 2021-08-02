@@ -8,7 +8,7 @@ import ReviewForm from '../reviews/review-form.jsx';
 import ReviewsList from '../reviews/reviews-list.jsx';
 import Map from '../map/map.jsx';
 import LoadingScreen from '../loading-screen/loading-screen.jsx';
-import {AuthorizationStatus, FetchingStatus, FavoriteStatus} from '../../const.js';
+import {AuthorizationStatus, FetchingStatus, FavoriteStatus, MAX_PHOTOS} from '../../const.js';
 import {postGetFavorites} from '../../store/api-actions.js';
 import {getAuthorizationStatus, getError} from '../../store/user/selectors.js';
 import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
@@ -30,11 +30,10 @@ function Property() {
   const changedPin = false;
   const [isActive, toggleActive] = useToggle(currentOffer.isFavorite);
 
-  const toggleToFavorites = () => {
+  const handleFavoriteToggle = () => {
     toggleActive();
     dispatch(postGetFavorites(currentOffer.id, isActive ? FavoriteStatus.FALSE : FavoriteStatus.TRUE));
   };
-
 
   if (fetchDataStatus === FetchingStatus.FETCHING) {
     return (
@@ -60,7 +59,7 @@ function Property() {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {currentOffer.images.slice(0,6).map((image) => (
+              {currentOffer.images.slice(0, MAX_PHOTOS).map((image) => (
                 <div className="property__image-wrapper" key={image}>
                   <img className="property__image" src={image} alt={currentOffer.type}/>
                 </div>))}
@@ -82,7 +81,7 @@ function Property() {
                       ? 'property__bookmark-button property__bookmark-button--active button'
                       : 'property__bookmark-button button'}
                     type="button"
-                    onClick={toggleToFavorites}
+                    onClick={handleFavoriteToggle}
                   >
                     <svg className="property__bookmark-icon" width="31" height="33">
                       <use xlinkHref="#icon-bookmark"></use>
@@ -99,7 +98,7 @@ function Property() {
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {currentOffer.type}
+                  {currentOffer.type.charAt(0).toUpperCase() + currentOffer.type.slice(1)}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
                   {currentOffer.bedrooms} Bedrooms
