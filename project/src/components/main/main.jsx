@@ -1,6 +1,5 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {getFilteredOffers} from '../../utils.js';
 import MainEmpty from './main-empty.jsx';
 import CardList from '../card/card-list.jsx';
 import SortList from '../sort/sort-list.jsx';
@@ -9,9 +8,8 @@ import LocationList from '../location/location-list.jsx';
 import AccountLogged from '../account/account-logged.jsx';
 import AccountNotLogged from '../account/account-not-logged.jsx';
 import Map from '../map/map.jsx';
-import {sorting} from '../sort/sort.js';
 import {AuthorizationStatus, cities} from '../../const.js';
-import {getAllOffers} from '../../store/data/selectors.js';
+import {getSortedOffersOfOneCity} from '../../store/data/selectors.js';
 import {getSort, getCity} from '../../store/navigation/selectors.js';
 import {getAuthorizationStatus, getError} from '../../store/user/selectors.js';
 import useToggle from '../../hooks/use-toggle.js';
@@ -20,16 +18,13 @@ import ToastError from '../toast-error/toast-error.jsx';
 function Main() {
   const OFFERS_LENGTH = 0;
 
-  const allOffers = useSelector(getAllOffers);
   const city = useSelector(getCity);
   const sort = useSelector(getSort);
   const error = useSelector(getError);
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const [showSort, toggleShowSort] = useToggle(false);
 
-  const offersOfOneCity = getFilteredOffers(allOffers, city);
-
-  sorting(offersOfOneCity, sort);
+  const offersOfOneCity = useSelector(getSortedOffersOfOneCity);
 
   const changedPin = true;
 

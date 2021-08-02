@@ -11,7 +11,6 @@ import {getError} from '../../store/user/selectors.js';
 import FavoritesEmpty from './favorites-empty.jsx';
 import ToastError from '../toast-error/toast-error.jsx';
 
-
 function Favorites() {
   const FAVORITES_LENGTH = 0;
 

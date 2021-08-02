@@ -1,4 +1,4 @@
-import {getUniqCities, getFilteredOffers, isCheckedAuth, adaptedOffers, adaptedComments, getHeaders} from './utils.js';
+import {getUniqCities, isCheckedAuth, adaptOffers, adaptComments, getHeaders} from './utils.js';
 import {fakeOffer, fakeComment, adaptedFakeComment, adaptedFakeOffer} from './fake.js';
 import {AuthorizationStatus} from './const.js';
 
@@ -18,23 +18,18 @@ describe('Functions: Utils', () => {
     expect(getUniqCities([adaptedFakeOffer])).toStrictEqual([fakeCity]);
   });
 
-  it('should return getFilteredOffers is correct', () => {
-
-    expect(getFilteredOffers([adaptedFakeOffer], fakeCity)[0]).toStrictEqual(adaptedFakeOffer);
-  });
-
   it('should return isCheckedAuth is correct', () => {
 
     expect(isCheckedAuth(authorizationStatus)).toBe(true);
   });
 
 
-  it('should return adaptedOffers is correct', () => {
-    expect(adaptedOffers([fakeOffer])[0]).toStrictEqual(adaptedFakeOffer);
+  it('should return adaptOffers is correct', () => {
+    expect(adaptOffers([fakeOffer])[0]).toStrictEqual(adaptedFakeOffer);
   });
 
-  it('should return adaptedComments is correct', () => {
-    expect(adaptedComments([fakeComment])[0]).toStrictEqual(adaptedFakeComment);
+  it('should return adaptComments is correct', () => {
+    expect(adaptComments([fakeComment])[0]).toStrictEqual(adaptedFakeComment);
   });
 
   it('should return getHeader is correct', () => {

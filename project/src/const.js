@@ -1,3 +1,7 @@
+export const MAX_COMMENTS = 10;
+export const MAX_PHOTOS = 6;
+export const LENGTH_OF_OFFER = 3;
+
 export const houseTypes = ['hotel', 'house', 'apartment', 'room'];
 
 export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
@@ -67,4 +71,10 @@ export const FetchingStatus = {
 export const FavoriteStatus = {
   TRUE: '1',
   FALSE: '0',
+};
+
+export const HttpStatus = {
+  UNAUTHORIZED: 401,
+  BAD_REQUEST: 400,
+  NOT_FOUND: 404,
 };

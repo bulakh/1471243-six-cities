@@ -36,7 +36,6 @@ if (!isNaN(parseInt(CURRENT_OFFER, 10))) {
   store.dispatch(fetchDataForOffer(CURRENT_OFFER))
     .then(() => {
       store.dispatch(fetchOffersList());
-
     });
 } else {
   store.dispatch(fetchOffersList());

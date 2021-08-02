@@ -1,14 +1,19 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import Logo from '../logo/logo.jsx';
 import Location from '../location/location.jsx';
 import {cities} from '../../const.js';
 import AccountLogged from '../account/account-logged.jsx';
+import {getError} from '../../store/user/selectors.js';
+import ToastError from '../toast-error/toast-error.jsx';
 
 function MainEmpty({city}) {
+  const error = useSelector(getError);
 
   return (
     <div className="page page--gray page--main">
+      {error !== '' && <ToastError/>}
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

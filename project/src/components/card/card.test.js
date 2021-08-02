@@ -32,7 +32,7 @@ describe('Component: Card', () => {
 
     expect(screen.getByText(adaptedFakeOffer.title)).toBeInTheDocument();
     expect(screen.getByText(`€${adaptedFakeOffer.price}`)).toBeInTheDocument();
-    expect(screen.getByText(adaptedFakeOffer.type)).toBeInTheDocument();
+    expect(screen.getByText(adaptedFakeOffer.type.charAt(0).toUpperCase() + adaptedFakeOffer.type.slice(1))).toBeInTheDocument();
   });
 
   it('should dispatch point id when user hover on article', () => {

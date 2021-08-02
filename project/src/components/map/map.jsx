@@ -9,13 +9,13 @@ import {getSelectedPointId} from '../../store/navigation/selectors.js';
 
 const defaultIcon = L.icon({
   iconUrl: 'img/pin.svg',
-  iconSize: [30, 30],
+  iconSize: [27, 39],
   iconAnchor: [15, 30],
 });
 
 const currentIcon = L.icon({
   iconUrl: 'img/pin-active.svg',
-  iconSize: [30, 30],
+  iconSize: [27, 39],
   iconAnchor: [15, 30],
 });
 

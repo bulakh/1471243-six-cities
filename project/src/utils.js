@@ -1,4 +1,4 @@
-import {AuthorizationStatus} from './const';
+import {AuthorizationStatus, MAX_COMMENTS} from './const';
 import {offerAdaptToClient, commentAdaptToClient} from './store/adapter.js';
 
 export const getUniqCities = (offers) => {
@@ -8,28 +8,25 @@ export const getUniqCities = (offers) => {
   return uniqCities;
 };
 
-export const getFilteredOffers = (offers, city) =>
-  offers.filter((offer) => offer.city.name === city);
-
 export const isCheckedAuth = (authorizationStatus) =>
   authorizationStatus === AuthorizationStatus.UNKNOWN;
 
-export const adaptedOffers = (offers) => {
-  const adaptOffers = [];
+export const adaptOffers = (offers) => {
+  const adaptedOffers = [];
 
   offers.forEach((offer) => {
-    adaptOffers.push(offerAdaptToClient(offer));
+    adaptedOffers.push(offerAdaptToClient(offer));
   });
-  return adaptOffers;
+  return adaptedOffers;
 };
 
-export const adaptedComments = (comments) => {
-  const adaptComments = [];
+export const adaptComments = (comments) => {
+  const adaptedComments = [];
 
   comments.forEach((comment) => {
-    adaptComments.push(commentAdaptToClient(comment));
+    adaptedComments.push(commentAdaptToClient(comment));
   });
-  return adaptComments;
+  return adaptedComments;
 };
 
 export const getHeaders = (token) => {
@@ -46,5 +43,5 @@ export const getSortedComments = (comments) => {
   comments.map ((comment) => comment.date = new Date(comment.date));
   comments.sort(((a, b) => b.date - a.date));
   comments.map ((comment) => comment.date = comment.date.toUTCString());
-  return comments.slice(0, 10);
+  return comments.slice(0, MAX_COMMENTS);
 };

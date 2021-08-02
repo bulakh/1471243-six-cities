@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {Switch, Route, Redirect} from 'react-router-dom';
-import {AppRoute, FetchingStatus, AuthorizationStatus} from '../../const.js';
+import {AppRoute, FetchingStatus, AuthorizationStatus, LENGTH_OF_OFFER} from '../../const.js';
 import Main from '../main/main.jsx';
 import Login from '../login/login-screen.jsx';
 import Favorites from '../favorites/favorites.jsx';
@@ -11,11 +11,12 @@ import NotFoundPage from '../not-found-page/not-found-page.jsx';
 import LoadingScreen from '../loading-screen/loading-screen.jsx';
 import {isCheckedAuth} from '../../utils.js';
 import {getAuthorizationStatus} from '../../store/user/selectors.js';
-import {getFetchDataStatus} from '../../store/data/selectors.js';
+import {getOffer, getFetchDataStatus} from '../../store/data/selectors.js';
 
 function App() {
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const fetchDataStatus = useSelector(getFetchDataStatus);
+  const offer = useSelector(getOffer);
 
   if (isCheckedAuth(authorizationStatus) || fetchDataStatus === FetchingStatus.FETCHING) {
     return (
@@ -25,7 +26,10 @@ function App() {
 
   return (
     <Switch>
-      <Route exact path={AppRoute.MAIN}>
+      <Route
+        exact
+        path={AppRoute.MAIN}
+      >
         <Main/>
       </Route>
       <Route
@@ -42,8 +46,13 @@ function App() {
         render={() => <Favorites/>}
       >
       </PrivateRoute>
-      <Route exact path={AppRoute.ROOM}>
-        <Property/>
+      <Route
+        exact
+        path={AppRoute.ROOM}
+        render={() => Object.keys(offer).length === LENGTH_OF_OFFER
+          ? <Property/>
+          : <NotFoundPage/>}
+      >
       </Route>
       <Route>
         <NotFoundPage/>
